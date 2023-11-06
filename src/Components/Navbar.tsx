@@ -14,11 +14,22 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import Link from "next/link";
+import { jwtDecode } from "@/lib/jwt";
 
 const pages = ["Products", "Pricing", "Blog"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 export default function ResponsiveAppBar() {
+  const [decodedData, setDecodedData] = React.useState(null);
+  const token = localStorage.getItem("auth_token");
+
+  React.useEffect(() => {
+    if (token !== null) {
+      const { decodedToken } = jwtDecode(token);
+      setDecodedData(decodedToken);
+    }
+  }, [token]);
+
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
@@ -132,9 +143,11 @@ export default function ResponsiveAppBar() {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            <Link href={"/login"}>
-              <h1 className="cursor-pointer">Login</h1>
-            </Link>
+            {!decodedData && (
+              <Link href={"/login"}>
+                <h1 className="cursor-pointer">Login</h1>
+              </Link>
+            )}
             {/* <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar

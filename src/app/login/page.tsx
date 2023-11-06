@@ -11,23 +11,40 @@ import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { useMutation } from "@apollo/client";
+import { Login } from "@/API/GraphQl/user";
+import BasicModal from "@/Components/Modale";
+import { useRouter } from "next/navigation";
 
 const defaultTheme = createTheme();
 
 export default function SignInSide() {
-  const [formData, setFormData] = React.useState({});
+  const router = useRouter();
+
+  const [login, { loading, error, data }] = useMutation(Login);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    setFormData({
-      email: data.get("email"),
-      password: data.get("password"),
+    const dataa = new FormData(event.currentTarget);
+    login({
+      variables: {
+        input: {
+          email: dataa.get("email") as string,
+          password: dataa.get("password") as string,
+        },
+      },
     });
+
+    if (error) return console.log(error);
+    if (data) {
+      localStorage.setItem("auth_token", data.login.token);
+      router.push('/')
+    }
   };
 
   return (
     <ThemeProvider theme={defaultTheme}>
+      {error && <BasicModal message={error.message} click={true} />}
       <Grid container component="main" sx={{ height: "100vh" }}>
         <CssBaseline />
         <Grid
@@ -95,7 +112,7 @@ export default function SignInSide() {
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
-                Sign In
+                {loading ? "Signing in..." : "Sign in"}
               </Button>
             </Box>
           </Box>
