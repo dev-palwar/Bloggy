@@ -15,6 +15,7 @@ import { useMutation } from "@apollo/client";
 import { Login } from "@/API/GraphQl/user";
 import BasicModal from "@/Components/Modale";
 import { useRouter } from "next/navigation";
+import { setUser } from "@/lib/user";
 
 const defaultTheme = createTheme();
 
@@ -35,11 +36,8 @@ export default function SignInSide() {
       },
     });
 
-    if (error) return console.log(error);
-    if (data) {
-      localStorage.setItem("auth_token", data.login.token);
-      router.push('/')
-    }
+    if (data) if (setUser(data.login.token)) router.push("/");
+    
   };
 
   return (

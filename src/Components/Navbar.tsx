@@ -15,18 +15,35 @@ import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import Link from "next/link";
 import { jwtDecode } from "@/lib/jwt";
+import { getUser } from "@/lib/user";
+import { logout } from "@/lib/logout";
+import EditIcon from "@mui/icons-material/Edit";
 
 const pages = ["Products", "Pricing", "Blog"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const settings = ["Profile", "Blogs", "Logout"];
+
+type User = {
+  avatar: string;
+  name: string;
+  id: string | null;
+};
 
 export default function ResponsiveAppBar() {
-  const [decodedData, setDecodedData] = React.useState(null);
-  const token = localStorage.getItem("auth_token");
+  const [user, setUser] = React.useState<User>({
+    avatar: "",
+    name: "",
+    id: null,
+  });
+  const token = getUser();
 
   React.useEffect(() => {
     if (token !== null) {
       const { decodedToken } = jwtDecode(token);
-      setDecodedData(decodedToken);
+      setUser({
+        id: decodedToken.userId,
+        name: decodedToken.name,
+        avatar: decodedToken.avatar,
+      });
     }
   }, [token]);
 
@@ -57,23 +74,25 @@ export default function ResponsiveAppBar() {
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
-          <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="#app-bar-with-responsive-menu"
-            sx={{
-              mr: 2,
-              display: { xs: "none", md: "flex" },
-              fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "inherit",
-              textDecoration: "none",
-            }}
-          >
-            BLOGGY
-          </Typography>
+          <Link href={"/"}>
+            <Typography
+              variant="h6"
+              noWrap
+              component="a"
+              href="#app-bar-with-responsive-menu"
+              sx={{
+                mr: 2,
+                display: { xs: "none", md: "flex" },
+                fontFamily: "monospace",
+                fontWeight: 700,
+                letterSpacing: ".3rem",
+                color: "inherit",
+                textDecoration: "none",
+              }}
+            >
+              BLOGGY
+            </Typography>
+          </Link>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
@@ -142,20 +161,23 @@ export default function ResponsiveAppBar() {
             ))} */}
           </Box>
 
+          <EditIcon />
+          <Typography marginLeft={0.1} marginRight={3}>
+            Add a blog
+          </Typography>
           <Box sx={{ flexGrow: 0 }}>
-            {!decodedData && (
+            {user.id == null ? (
               <Link href={"/login"}>
                 <h1 className="cursor-pointer">Login</h1>
               </Link>
+            ) : (
+              <Tooltip title="Open settings">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <Avatar alt="Dev Palwar" src={user.avatar} />
+                </IconButton>
+              </Tooltip>
             )}
-            {/* <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar
-                  alt="Dev Palwar"
-                  src="https://pbs.twimg.com/profile_images/1693260676402180097/oHN7hwsD_400x400.jpg"
-                />
-              </IconButton>
-            </Tooltip> */}
+
             <Menu
               sx={{ mt: "45px" }}
               id="menu-appbar"
@@ -174,7 +196,15 @@ export default function ResponsiveAppBar() {
             >
               {settings.map((setting) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+                  {setting == "Logout" ? (
+                    <button onClick={() => logout()}>
+                      <Typography textAlign="center">{setting}</Typography>
+                    </button>
+                  ) : (
+                    <Link href={`/${setting.toLowerCase()}`}>
+                      <Typography textAlign="center">{setting}</Typography>
+                    </Link>
+                  )}
                 </MenuItem>
               ))}
             </Menu>
