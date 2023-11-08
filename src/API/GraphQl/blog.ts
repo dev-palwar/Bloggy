@@ -22,6 +22,7 @@ export const getBlog = gql`
   mutation FindBlog($findBlogId: ID) {
     blog: findBlog(id: $findBlogId) {
       id
+      poster
       title
       description
       createdAt
@@ -32,6 +33,18 @@ export const getBlog = gql`
       }
       category
       tags
+      upvotes {
+        user {
+          id
+          name
+        }
+      }
     }
+  }
+`;
+
+export const upvotingBlog = gql`
+  mutation UpvoteOrUnvoteBlog($blogId: ID!) {
+    upvoted: upvoteOrUnvoteBlog(blogId: $blogId)
   }
 `;

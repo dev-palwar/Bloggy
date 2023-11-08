@@ -26,7 +26,7 @@ export default function Page() {
               <h1 className="text-[3rem]">{blogData[0]?.Author.name}</h1>
               <div>
                 {blogData.map((value: any, index: any) => (
-                  <Link href={`/Blogs/${value.id}`}>
+                  <Link href={`/Blogs/${value.id}`} className="">
                     <Blog
                       key={index}
                       title={value.title}

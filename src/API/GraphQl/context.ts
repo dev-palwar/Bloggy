@@ -1,7 +1,5 @@
-import { getUser } from "@/lib/user";
-
 export const context = () => {
-  const token = getUser();
+  const token = localStorage.getItem("auth_token");
   return {
     context: {
       headers: {

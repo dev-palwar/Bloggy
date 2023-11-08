@@ -17,7 +17,7 @@ export default function Page() {
       <div className="home-section flex justify-evenly">
         <div className="Blog-section flex flex-col">
           {blogData.map((value: any, index: any) => (
-            <Link href={`/Blogs/${value.id}`}>
+            <Link href={`/Blogs/${value.id}`} className="">
               <Blog
                 key={index}
                 title={value.title}
@@ -31,7 +31,7 @@ export default function Page() {
             </Link>
           ))}
         </div>
-        {/* <div className="Alert-section flex flex-col h-[100vh] w-[45vh] border sticky top-0"></div> */}
+        <div className="Alert-section flex flex-col h-[100vh] w-[45vh] border sticky top-0"></div>
       </div>
     </div>
   );

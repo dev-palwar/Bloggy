@@ -34,7 +34,13 @@ const Blog = (params: blogContent) => {
           <h1 className="text-[25px] font-bold">{params.title}</h1>
           <p className="opacity-70">{params.description}</p>
         </div>
-        <Image src={params.poster} height={100} width={200} alt="user" />
+        <Image
+          src={params.poster}
+          height={100}
+          width={200}
+          alt="user"
+          className="h-fit"
+        />
       </div>
     </div>
   );

@@ -15,7 +15,6 @@ import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import Link from "next/link";
 import { jwtDecode } from "@/lib/jwt";
-import { getUser } from "@/lib/user";
 import { logout } from "@/lib/logout";
 import EditIcon from "@mui/icons-material/Edit";
 
@@ -34,10 +33,11 @@ export default function ResponsiveAppBar() {
     name: "",
     id: null,
   });
-  const token = getUser();
+
+  const token = localStorage.getItem("auth_token") as string;
 
   React.useEffect(() => {
-    if (token !== null) {
+    if (token != null) {
       const { decodedToken } = jwtDecode(token);
       setUser({
         id: decodedToken.userId,
@@ -162,9 +162,11 @@ export default function ResponsiveAppBar() {
           </Box>
 
           <EditIcon />
-          <Typography marginLeft={0.1} marginRight={3}>
-            Add a blog
-          </Typography>
+          <Link href={"/write"}>
+            <Typography marginLeft={0.1} marginRight={3}>
+              Add a blog
+            </Typography>
+          </Link>
           <Box sx={{ flexGrow: 0 }}>
             {user.id == null ? (
               <Link href={"/login"}>
