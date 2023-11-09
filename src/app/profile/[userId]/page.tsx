@@ -1,19 +1,18 @@
 "use client";
 import { usersBlogs } from "@/API/GraphQl/user";
 import Blog from "@/Components/Card";
-import { getLoggedInUser } from "@/lib/user";
 import { useQuery } from "@apollo/client";
 import LinearProgress from "@mui/material/LinearProgress";
 import { useRouter } from "next/navigation";
 
-export default function Page() {
+export default function Page({ params }: any) {
   const router = useRouter();
 
-  const { userId } = getLoggedInUser();
-
   const { loading, error, data } = useQuery(usersBlogs, {
-    variables: { userId },
+    variables: { userId: params.userId },
   });
+
+  if (error) router.push("/login");
 
   const blogData = data?.profile?.blogs || [];
 

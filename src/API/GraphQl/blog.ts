@@ -48,3 +48,14 @@ export const upvotingBlog = gql`
     upvoted: upvoteOrUnvoteBlog(blogId: $blogId)
   }
 `;
+
+export const addBlog = gql`
+  mutation CreateBlog($input: BlogInput!) {
+    createBlog(input: $input) {
+      id
+      title
+      description
+      category
+    }
+  }
+`;

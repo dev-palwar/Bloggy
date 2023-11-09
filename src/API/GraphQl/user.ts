@@ -13,17 +13,20 @@ export const Login = gql`
 `;
 
 export const usersBlogs = gql`
-  query GetUsersBlogs {
-    blogs: getUsersBlogs {
-      id
-      title
-      description
-      category
-      poster
-      createdAt
-      Author {
-        name
-        avatar
+  query Blogs($userId: ID!) {
+    profile: getProfile(userId: $userId) {
+      blogs {
+        id
+        description
+        title
+        poster
+        createdAt
+        category
+        Author {
+          name
+          id
+          avatar
+        }
       }
     }
   }
