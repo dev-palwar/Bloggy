@@ -12,21 +12,37 @@ export const Login = gql`
   }
 `;
 
-export const usersBlogs = gql`
-  query Blogs($userId: ID!) {
+export const getProfile = gql`
+  query GetProfile($userId: ID!) {
     profile: getProfile(userId: $userId) {
+      id
+      name
+      bio
+      nationality
+      avatar
       blogs {
         id
-        description
         title
         poster
         createdAt
+        description
         category
         Author {
           name
           id
+          createdAt
           avatar
         }
+      }
+      following {
+        id
+        name
+        avatar
+      }
+      followers {
+        id
+        name
+        avatar
       }
     }
   }

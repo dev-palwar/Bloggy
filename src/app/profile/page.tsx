@@ -1,17 +1,14 @@
 "use client";
-import { usersBlogs } from "@/API/GraphQl/user";
+import { getProfile } from "@/API/GraphQl/user";
 import Blog from "@/Components/Card";
 import { getLoggedInUser } from "@/lib/user";
 import { useQuery } from "@apollo/client";
 import LinearProgress from "@mui/material/LinearProgress";
-import { useRouter } from "next/navigation";
 
 export default function Page() {
-  const router = useRouter();
-
   const { userId } = getLoggedInUser();
 
-  const { loading, error, data } = useQuery(usersBlogs, {
+  const { loading, error, data } = useQuery(getProfile, {
     variables: { userId },
   });
 
@@ -19,14 +16,13 @@ export default function Page() {
 
   return (
     <>
-      {" "}
       {loading ? (
         <LinearProgress />
       ) : (
         <div className="container">
           <div className="home-section flex justify-evenly">
             <div className="Blog-section flex flex-col">
-              <h1 className="text-[3rem]">{blogData[0]?.Author.name}</h1>
+              <h1 className="text-[3rem]">{data?.profile?.name}</h1>
               <div>
                 {blogData.map((value: any, index: any) => (
                   <Blog
@@ -42,7 +38,6 @@ export default function Page() {
                 ))}
               </div>
             </div>
-            {/* <div className="Alert-section flex flex-col h-[100vh] w-[45vh] border sticky top-0"></div> */}
           </div>
         </div>
       )}

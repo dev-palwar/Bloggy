@@ -19,7 +19,7 @@ import { logout } from "@/lib/logout";
 import EditIcon from "@mui/icons-material/Edit";
 
 const pages = ["Products", "Pricing", "Blog"];
-const settings = ["Profile", "Blogs", "Logout"];
+const settings = ["Profile", "Logout"];
 
 type User = {
   avatar: string;
