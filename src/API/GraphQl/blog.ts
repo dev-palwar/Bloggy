@@ -19,8 +19,8 @@ export const AllBlogs = gql`
 `;
 
 export const getBlog = gql`
-  query FindBlog($findBlogId: ID) {
-    blog: findBlog(id: $findBlogId) {
+  query FindBlog($input: ID) {
+    blog: findBlog(input: $input) {
       id
       poster
       title

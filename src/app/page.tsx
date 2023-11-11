@@ -20,7 +20,7 @@ export default function Page() {
       {error && <BasicModal message={error.message} click={true} />}
       <div className="home-section flex justify-evenly">
         <div className="Blog-section flex flex-col">
-          {blogData?.map((value: Blog, index: any) => (
+          {blogData?.map((value: Blog) => (
             <Blog
               key={value.id}
               id={value.id}

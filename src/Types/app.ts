@@ -1,4 +1,4 @@
-interface Params {
+interface IDS {
   params: {
     blogId: string;
     userId: string;

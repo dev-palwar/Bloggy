@@ -5,6 +5,15 @@ interface Author {
   nationality: string;
   avatar: string;
   blogs: Blog[];
-  following: Author[];
-  followers: Author[];
+  following: User[];
+  followers: User[];
+}
+
+interface User {
+  id: string;
+  avatar?: string;
+  name: string;
+  email: string;
+  nationality?: string;
+  createdAt: string;
 }

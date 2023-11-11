@@ -8,3 +8,11 @@ export const context = () => {
     },
   };
 };
+
+export const variables = (id: string) => {
+  return {
+    variables: {
+      input: id,
+    },
+  };
+};

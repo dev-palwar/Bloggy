@@ -1,5 +1,5 @@
 "use client";
-import { context } from "@/API/GraphQl/context";
+import { context, variables } from "@/API/GraphQl/context";
 import { followUnfollowQuery, getProfile } from "@/API/GraphQl/user";
 import Blog from "@/Components/Card";
 import { jwtDecode } from "@/lib/jwt";
@@ -9,7 +9,7 @@ import LinearProgress from "@mui/material/LinearProgress";
 import Link from "next/link";
 import React from "react";
 
-export default function Page({ params }: Params) {
+export default function Page({ params }: IDS) {
   const [ifFollows, setIfFollows] = React.useState<Boolean>(false);
   const [userData, setUserData] = React.useState<Author | undefined>();
 
@@ -17,9 +17,10 @@ export default function Page({ params }: Params) {
   const token = localStorage.getItem("auth_token") as string;
   const { decodedToken } = jwtDecode(token);
 
-  const { loading, error, data, refetch } = useQuery(getProfile, {
-    variables: { userId: params.userId },
-  });
+  const { loading, error, data, refetch } = useQuery(
+    getProfile,
+    variables(params.userId)
+  );
 
   const [followPayload, followStatus] = useMutation(followUnfollowQuery, {
     ...context(),
@@ -43,7 +44,7 @@ export default function Page({ params }: Params) {
       // Checks if the currently logged-in user is following the user
       setIfFollows(
         data?.profile?.followers.some(
-          (follower: Author) => follower.id === decodedToken.userId
+          (follower: User) => follower.id === decodedToken.userId
         )
       );
     }
@@ -59,7 +60,7 @@ export default function Page({ params }: Params) {
             <div className="Blog-section flex flex-col">
               <h1 className="text-[3rem]">{userData?.name}</h1>
               <div>
-                {userData?.blogs.map((value: any, index: any) => (
+                {userData?.blogs.map((value: Blog) => (
                   <Blog
                     key={value.id}
                     id={value.id}
@@ -104,7 +105,7 @@ export default function Page({ params }: Params) {
               </div>
               <div className="following flex flex-col p-4 gap-2">
                 <h1 className="font-bold pb-[10px] border-b-2">Following</h1>
-                {userData?.following.map((user: any) => {
+                {userData?.following.map((user: User) => {
                   return (
                     <div className="flex opacity-80 text-[15px] items-center gap-3 ">
                       <Link href={`/profile/${user.id}`}>
@@ -121,7 +122,7 @@ export default function Page({ params }: Params) {
               </div>
               <div className="followers flex flex-col p-4 gap-2">
                 <h1 className="font-bold pb-[10px] border-b-2">Followers</h1>
-                {userData?.followers.map((user: any) => {
+                {userData?.followers.map((user: User) => {
                   return (
                     <div className="flex opacity-80 text-[15px] items-center gap-3 ">
                       <Link href={`/profile/${user.id}`}>

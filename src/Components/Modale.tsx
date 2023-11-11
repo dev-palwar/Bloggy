@@ -1,6 +1,5 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 
 const style = {
@@ -15,13 +14,12 @@ const style = {
   p: 4,
 };
 
-export default function BasicModal({
-  message,
-  click,
-}: {
-  message: string;
+interface BasicModalProps {
+  children: React.ReactNode;
   click: boolean;
-}) {
+}
+
+export default function BasicModal({ children, click }: BasicModalProps) {
   const [open, setOpen] = React.useState(false);
 
   const handleOpen = () => setOpen(true);
@@ -39,11 +37,7 @@ export default function BasicModal({
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            {message}
-          </Typography>
-        </Box>
+        <Box sx={style}>{children}</Box>
       </Modal>
     </div>
   );

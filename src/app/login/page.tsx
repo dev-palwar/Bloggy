@@ -16,18 +16,21 @@ import { Login } from "@/API/GraphQl/user";
 import BasicModal from "@/Components/Modale";
 import { useRouter } from "next/navigation";
 import { setUser } from "@/lib/user";
+import SignUp from "@/Components/SignUp";
 
 const defaultTheme = createTheme();
 
 export default function SignInSide() {
   const router = useRouter();
 
-  const [login, { loading, error, data }] = useMutation(Login);
+  const [signUp, setSignUp] = React.useState<Boolean>(false);
+
+  const [loginPayload, { loading, error, data }] = useMutation(Login);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const dataa = new FormData(event.currentTarget);
-    login({
+    loginPayload({
       variables: {
         input: {
           email: dataa.get("email") as string,
@@ -37,12 +40,11 @@ export default function SignInSide() {
     });
 
     if (data) if (setUser(data.login.token)) router.push("/");
-    
   };
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      {error && <BasicModal message={error.message} click={true} />}
+      {error && <BasicModal children={error.message} click={true} />}
       <Grid container component="main" sx={{ height: "100vh" }}>
         <CssBaseline />
         <Grid
@@ -113,7 +115,17 @@ export default function SignInSide() {
                 {loading ? "Signing in..." : "Sign in"}
               </Button>
             </Box>
+            <p>
+              New here?{" "}
+              <span
+                className="text-purple-500 cursor-pointer"
+                onClick={() => setSignUp(!signUp)}
+              >
+                Make an account
+              </span>
+            </p>
           </Box>
+          {signUp && <BasicModal click={true} children={<SignUp />} />}
         </Grid>
       </Grid>
     </ThemeProvider>

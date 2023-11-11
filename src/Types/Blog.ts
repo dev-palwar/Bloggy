@@ -4,7 +4,7 @@ interface Blog {
   poster?: string;
   createdAt: string;
   description: string;
-  Author: Author;
+  Author: User;
   category: Category[];
   tags?: string[];
   upvotes?: Author[];
@@ -14,8 +14,8 @@ interface Blog {
 interface Comment {
   id: string;
   comment: string;
-  user: Author;
-  upvotes?: Author[];
+  user: User;
+  upvotes?: User[];
   createdAt: string;
 }
 

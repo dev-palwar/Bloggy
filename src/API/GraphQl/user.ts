@@ -13,8 +13,8 @@ export const Login = gql`
 `;
 
 export const getProfile = gql`
-  query GetProfile($userId: ID!) {
-    profile: getProfile(userId: $userId) {
+  query GetProfile($input: ID!) {
+    profile: getProfile(input: $input) {
       id
       name
       bio
@@ -51,5 +51,11 @@ export const getProfile = gql`
 export const followUnfollowQuery = gql`
   mutation FollowUnfollowUser($followUnfollowUserId: ID!) {
     follow: followUnfollowUser(id: $followUnfollowUserId)
+  }
+`;
+
+export const signUpQuery = gql`
+  mutation SignUp($input: signUp!) {
+    signUp(input: $input)
   }
 `;
