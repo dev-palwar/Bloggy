@@ -175,7 +175,7 @@ export default function ResponsiveAppBar() {
             ) : (
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Dev Palwar" src={user.avatar} />
+                  <Avatar alt={user.name} src={user.avatar} />
                 </IconButton>
               </Tooltip>
             )}
@@ -203,7 +203,7 @@ export default function ResponsiveAppBar() {
                       <Typography textAlign="center">{setting}</Typography>
                     </button>
                   ) : (
-                    <Link href={`/${setting.toLowerCase()}`}>
+                    <Link href={`/${setting.toLowerCase()}/${user.id}`}>
                       <Typography textAlign="center">{setting}</Typography>
                     </Link>
                   )}

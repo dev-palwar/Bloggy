@@ -3,28 +3,14 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-interface blogContent {
-  id: string;
-  title: string;
-  description: string;
-  poster: string;
-  author: {
-    id: string;
-    name: string;
-    avatar: string;
-  };
-  createdAt: string;
-  category: [string];
-}
-
-const Blog = (params: blogContent) => {
+const Blog = (params: Blog) => {
   return (
     <div className="card flex h-[13rem] w-[40rem] mt-5 p-[10px] flex-col gap-[10px] overflow-hidden">
       <div className="flex items-center gap-[10px]">
         <div className="avatar w-8">
-          <Link href={`/profile/${params.author.id}`}>
+          <Link href={`/profile/${params.Author.id}`}>
             <Image
-              src={params.author.avatar}
+              src={params.Author.avatar}
               height={100}
               width={100}
               alt="user"
@@ -32,10 +18,10 @@ const Blog = (params: blogContent) => {
             />
           </Link>
         </div>
-        <h1>{params.author.name}</h1>
+        <h1>{params.Author.name}</h1>
         <p>{formateDate(params.createdAt)}</p>
         <div className="ml-4 flex gap-2">
-          {params.category.map((cat) => {
+          {params.category.map((cat: Category) => {
             return <p className=" text-yellow-300">{cat}</p>;
           })}
         </div>
@@ -47,7 +33,7 @@ const Blog = (params: blogContent) => {
           </Link>
           <p className="opacity-70">{params.description}</p>
         </div>
-        <Image
+        <img
           src={params.poster}
           height={100}
           width={200}

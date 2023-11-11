@@ -47,3 +47,9 @@ export const getProfile = gql`
     }
   }
 `;
+
+export const followUnfollowQuery = gql`
+  mutation FollowUnfollowUser($followUnfollowUserId: ID!) {
+    follow: followUnfollowUser(id: $followUnfollowUserId)
+  }
+`;

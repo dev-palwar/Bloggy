@@ -2,7 +2,7 @@
 import { addBlog } from "@/API/GraphQl/blog";
 import { context } from "@/API/GraphQl/context";
 import { useMutation } from "@apollo/client";
-import { Button } from "@mui/material";
+import { Button, LinearProgress } from "@mui/material";
 import React, { useState } from "react";
 
 const categories = [
@@ -21,7 +21,10 @@ export default function Page() {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [tags, setTags] = useState("");
 
-  const [blogPayload, { loading, data, error }] = useMutation(addBlog, context());
+  const [blogPayload, { loading, data, error }] = useMutation(
+    addBlog,
+    context()
+  );
 
   const handleCategoryChange = (e) => {
     setSelectedCategory(e.target.value);
@@ -45,11 +48,10 @@ export default function Page() {
     });
   };
 
-  if (loading) return "Loading...";
-  if (data) console.log(data);
-  if (error) console.log(error);
+  if (error) window.location.href = "/login";
   return (
     <div className="container">
+      {loading && <LinearProgress />}
       <form className="flex flex-col" ref={formRef} onSubmit={log}>
         <input
           className="heading text-[3rem] font-bold outline-none border-l-8 pl-4 mb-8 p-2"

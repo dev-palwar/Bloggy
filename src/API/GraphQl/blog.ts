@@ -2,7 +2,7 @@ import { gql } from "@apollo/client";
 
 export const AllBlogs = gql`
   query GetAllBlogs {
-    blog: getAllBlogs {
+    blogs: getAllBlogs {
       id
       title
       description
@@ -19,7 +19,7 @@ export const AllBlogs = gql`
 `;
 
 export const getBlog = gql`
-  mutation FindBlog($findBlogId: ID) {
+  query FindBlog($findBlogId: ID) {
     blog: findBlog(id: $findBlogId) {
       id
       poster
