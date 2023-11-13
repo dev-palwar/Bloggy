@@ -8,6 +8,7 @@ module.exports = {
       "s8d7.turboimg.net",
       "devpalwar.vercel.app",
       "pbs.twimg.com",
+      "s8d6.turboimg.net",
     ],
   },
 };

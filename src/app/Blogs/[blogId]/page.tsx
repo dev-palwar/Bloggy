@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import { getBlog, upvotingBlog } from "@/API/GraphQl/blog";
-import BasicModal from "@/Components/Modale";
 import { formateDate } from "@/lib/formateDate";
 import { useMutation, useQuery } from "@apollo/client";
 import { LinearProgress } from "@mui/material";
@@ -35,26 +34,19 @@ export default function Page({ params }: IDS) {
 
   React.useEffect(() => {
     if (data) {
-      setBlogData(data?.blog);
+      setBlogData(data?.Blog);
       setIfLiked(
-        data?.blog?.upvotes.some(
-          (users: any) => users.user.id === decodedToken.userId
+        data?.Blog?.upvotes.some(
+          (users: any) => users.id === decodedToken.userId
         )
       );
     }
   }, [data, upvoteState]);
 
-  const handleUpvote = () => {
-    payloadForUpvote({
-      variables: {
-        blogId: blogId,
-      },
-    });
-  };
+  const handleUpvote = () => payloadForUpvote(variables(blogId));
 
   return (
     <>
-      {error && <BasicModal message={error.message} click={true} />}
       {loading ? (
         <LinearProgress />
       ) : (
@@ -62,20 +54,21 @@ export default function Page({ params }: IDS) {
           <h1 className="text-[3rem] font-bold mb-5">{blogData?.title}</h1>
           <div className="flex justify-between items-start">
             <div className="flex gap-2 items-center mb-[1rem]">
-              <Link href={`/profile/${blogData?.Author.id}`}>
+              <Link href={`/profile/${blogData?.author.id}`}>
                 <img
-                  src={blogData?.Author?.avatar}
+                  src={blogData?.author?.avatar}
                   height={100}
                   width={40}
                   alt="user"
                 />
               </Link>
               <p className="font-bold text-[23px] ml-1">
-                {blogData?.Author?.name}
+                {blogData?.author?.name}
               </p>
               <p className="mt-[3px]">
                 {formateDate(blogData?.createdAt ?? "")}
               </p>
+              <p className="text-blue-500 mt-[3px]">{blogData?.category}</p>
             </div>
             <div className="flex items-center gap-1" onClick={handleUpvote}>
               {upvoteState.loading ? (
@@ -95,9 +88,9 @@ export default function Page({ params }: IDS) {
               width={200}
               height={500}
               className="w-full h-full object-cover rounded"
-            ></img>
+            />
           </div>
-          <p>{blogData?.description}</p>
+          <p className="text-[1.4rem]">{blogData?.description}</p>
         </div>
       )}
     </>

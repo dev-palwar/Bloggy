@@ -8,9 +8,9 @@ const Blog = (params: Blog) => {
     <div className="card flex h-[13rem] w-[40rem] mt-5 p-[10px] flex-col gap-[10px] overflow-hidden">
       <div className="flex items-center gap-[10px]">
         <div className="avatar w-8">
-          <Link href={`/profile/${params.Author.id}`}>
+          <Link href={`/profile/${params.author.id}`}>
             <Image
-              src={params.Author.avatar}
+              src={params.author.avatar ?? ""}
               height={100}
               width={100}
               alt="user"
@@ -18,7 +18,7 @@ const Blog = (params: Blog) => {
             />
           </Link>
         </div>
-        <h1>{params.Author.name}</h1>
+        <h1>{params.author.name}</h1>
         <p>{formateDate(params.createdAt)}</p>
         <div className="ml-4 flex gap-2">
           {params.category.map((cat: Category) => {

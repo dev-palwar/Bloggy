@@ -4,6 +4,8 @@ import { context } from "@/API/GraphQl/context";
 import { useMutation } from "@apollo/client";
 import { Button, LinearProgress } from "@mui/material";
 import React, { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const categories = [
   "PROGRAMMING",
@@ -19,20 +21,13 @@ const categories = [
 export default function Page() {
   const formRef = React.useRef(null);
   const [selectedCategory, setSelectedCategory] = useState("");
-  const [tags, setTags] = useState("");
 
   const [blogPayload, { loading, data, error }] = useMutation(
     addBlog,
     context()
   );
 
-  const handleCategoryChange = (e) => {
-    setSelectedCategory(e.target.value);
-  };
-
-  const handleTagsChange = (e) => {
-    setTags(e.target.value);
-  };
+  const handleCategoryChange = (e) => setSelectedCategory(e.target.value);
 
   const log = (e) => {
     e.preventDefault();
@@ -42,30 +37,36 @@ export default function Page() {
           title: formRef.current[0].value,
           description: formRef.current[1].value,
           category: selectedCategory,
-          tags: tags.split(",").map((tag) => tag.trim()),
         },
       },
     });
   };
 
   if (error) window.location.href = "/login";
+  if (data) {
+    toast.success("Blog added");
+  }
+
   return (
     <div className="container">
+      <ToastContainer />
       {loading && <LinearProgress />}
       <form className="flex flex-col" ref={formRef} onSubmit={log}>
         <input
-          className="heading text-[3rem] font-bold outline-none border-l-8 pl-4 mb-8 p-2"
+          required
+          className="heading text-[3rem] font-bold outline-none pl-4 mb-8 p-2"
           placeholder="Write your heading here..."
           contentEditable="true"
         />
         <textarea
+          required
           placeholder="Blog content here..."
-          className="h-[60vh] border-l-4 outline-none pl-4 p-6 text-[25px] mb-6"
+          className="h-[60vh] outline-none pl-4 p-6 text-[25px] mb-6"
         />
         <select
           value={selectedCategory}
           onChange={handleCategoryChange}
-          className="mb-4 p-2"
+          className="mb-4 p-2 bg-transparent"
         >
           <option value="">Select a category</option>
           {categories.map((category, index) => (
@@ -74,13 +75,6 @@ export default function Page() {
             </option>
           ))}
         </select>
-        <input
-          type="text"
-          value={tags}
-          onChange={handleTagsChange}
-          placeholder="Add tags separated by commas"
-          className="mb-4 p-2"
-        />
         <Button type="submit" variant="contained" color="success">
           {" "}
           Post{" "}

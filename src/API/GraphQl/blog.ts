@@ -3,59 +3,51 @@ import { gql } from "@apollo/client";
 export const AllBlogs = gql`
   query GetAllBlogs {
     blogs: getAllBlogs {
-      id
       title
-      description
-      poster
-      category
       createdAt
-      Author {
+      category
+      author {
         id
         name
+        createdAt
         avatar
       }
+      description
+      id
+      poster
     }
   }
 `;
 
 export const getBlog = gql`
-  query FindBlog($input: ID) {
-    blog: findBlog(input: $input) {
+  query FindBlog($input: ID!) {
+    Blog: findBlog(input: $input) {
       id
-      poster
       title
       description
+      poster
       createdAt
-      Author {
-        id
-        avatar
-        name
-      }
       category
-      tags
       upvotes {
-        user {
-          id
-          name
-        }
+        id
+      }
+      author {
+        id
+        name
+        avatar
       }
     }
   }
 `;
 
 export const upvotingBlog = gql`
-  mutation UpvoteOrUnvoteBlog($blogId: ID!) {
-    upvoted: upvoteOrUnvoteBlog(blogId: $blogId)
+  mutation UpvoteOrDownvoteBlog($input: ID!) {
+    upvoteOrDownvoteBlog(input: $input)
   }
 `;
 
 export const addBlog = gql`
   mutation CreateBlog($input: BlogInput!) {
-    createBlog(input: $input) {
-      id
-      title
-      description
-      category
-    }
+    ID: createBlog(input: $input)
   }
 `;

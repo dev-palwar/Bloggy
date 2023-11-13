@@ -4,9 +4,8 @@ interface Blog {
   poster?: string;
   createdAt: string;
   description: string;
-  Author: User;
+  author: User;
   category: Category[];
-  tags?: string[];
   upvotes?: Author[];
   comments?: Comment[];
 }

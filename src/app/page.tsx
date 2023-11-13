@@ -17,7 +17,6 @@ export default function Page() {
   return (
     <div className="container">
       {loading && <LinearProgress />}
-      {error && <BasicModal message={error.message} click={true} />}
       <div className="home-section flex justify-evenly">
         <div className="Blog-section flex flex-col">
           {blogData?.map((value: Blog) => (
@@ -28,7 +27,7 @@ export default function Page() {
               description={value.description}
               poster={value.poster}
               category={value.category}
-              Author={value.Author}
+              author={value.author}
               createdAt={value.createdAt}
             />
           ))}

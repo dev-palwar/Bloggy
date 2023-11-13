@@ -30,20 +30,15 @@ export default function Page({ params }: IDS) {
     },
   });
 
-  const handleFollow = (userId: string) => {
-    followPayload({
-      variables: {
-        followUnfollowUserId: userId,
-      },
-    });
-  };
+  const handleFollow = (userId: string) => followPayload(variables(userId));
 
   React.useEffect(() => {
+    refetch();
     if (data) {
-      setUserData(data?.profile);
+      setUserData(data?.Profile);
       // Checks if the currently logged-in user is following the user
       setIfFollows(
-        data?.profile?.followers.some(
+        data?.Profile?.followers.some(
           (follower: User) => follower.id === decodedToken.userId
         )
       );
@@ -67,7 +62,7 @@ export default function Page({ params }: IDS) {
                     title={value.title}
                     description={value.description}
                     poster={value.poster}
-                    Author={value.Author}
+                    author={value.author}
                     createdAt={value.createdAt}
                     category={value.category}
                   />
@@ -76,11 +71,13 @@ export default function Page({ params }: IDS) {
             </div>
             <div className="Alert-section pl-[10px] flex flex-col h-[100vh] w-[45vh] border-l-2 sticky top-0">
               <div className="user-details-section flex flex-col p-[1rem]">
-                <img
-                  src={userData?.avatar}
-                  alt="user"
-                  className="h-[85px] w-[85px] rounded-full mb-3"
-                />
+                <div className="h-[12vh] w-[12vh] mb-3">
+                  <img
+                    src={userData?.avatar}
+                    alt="user"
+                    className="object-cover rounded-full h-full w-full"
+                  />
+                </div>
                 <h1 className="font-bold">{userData?.name}</h1>
                 <p className="opacity-80">
                   {userData?.followers.length} follower
@@ -109,11 +106,13 @@ export default function Page({ params }: IDS) {
                   return (
                     <div className="flex opacity-80 text-[15px] items-center gap-3 ">
                       <Link href={`/profile/${user.id}`}>
-                        <img
-                          alt={user.name}
-                          src={user?.avatar}
-                          className="h-[35px] rounded-full"
-                        />
+                        <div>
+                          <img
+                            alt={user.name}
+                            src={user?.avatar}
+                            className="h-[35px] rounded-full"
+                          />
+                        </div>
                       </Link>
                       <p>{user?.name}</p>
                     </div>
