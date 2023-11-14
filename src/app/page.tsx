@@ -16,9 +16,10 @@ export default function Page() {
 
   return (
     <div className="container">
-      {loading && <LinearProgress />}
-      <div className="home-section flex justify-evenly">
-        <div className="Blog-section flex flex-col">
+      {loading ? (
+        <LinearProgress />
+      ) : (
+        <div className="Blog-section flex flex-col items-center">
           {blogData?.map((value: Blog) => (
             <Blog
               key={value.id}
@@ -32,8 +33,7 @@ export default function Page() {
             />
           ))}
         </div>
-        {/* <div className="Alert-section flex flex-col h-[100vh] w-[45vh] border sticky top-0"></div> */}
-      </div>
+      )}
     </div>
   );
 }

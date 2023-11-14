@@ -69,7 +69,7 @@ export default function Page({ params }: IDS) {
                 ))}
               </div>
             </div>
-            <div className="Alert-section pl-[10px] flex flex-col h-[100vh] w-[45vh] border-l-2 sticky top-0">
+            <div className="Alert-section pl-[10px] flex flex-col h-[100vh] w-[45vh] sticky top-0">
               <div className="user-details-section flex flex-col p-[1rem]">
                 <div className="h-[12vh] w-[12vh] mb-3">
                   <img

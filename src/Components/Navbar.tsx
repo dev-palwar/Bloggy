@@ -72,7 +72,7 @@ export default function ResponsiveAppBar() {
   };
 
   return (
-    <Container className="sticky top-0 max-w-[81vw]">
+    <Container className="sticky top-0 max-w-[81vw] bg-white">
       <Toolbar disableGutters>
         <Link href={"/"}>
           <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />

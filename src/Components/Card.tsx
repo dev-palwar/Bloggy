@@ -1,4 +1,4 @@
-import { formateDate } from "@/lib/formateDate";
+import { formateDate, truncateText } from "@/lib/formateDate";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -7,22 +7,22 @@ const Blog = (params: Blog) => {
   return (
     <div className="card flex h-[13rem] w-[40rem] mt-5 p-[10px] flex-col gap-[10px] overflow-hidden">
       <div className="flex items-center gap-[10px]">
-        <div className="avatar w-8">
+        <div className="avatar h-[35px] w-[35px]">
           <Link href={`/profile/${params.author.id}`}>
             <Image
               src={params.author.avatar ?? ""}
               height={100}
               width={100}
               alt="user"
-              className="rounded-full"
+              className="h-full w-full object-cover rounded-full"
             />
           </Link>
         </div>
         <h1>{params.author.name}</h1>
-        <p>{formateDate(params.createdAt)}</p>
-        <div className="ml-4 flex gap-2">
+        <p className="opacity-70">{formateDate(params.createdAt)}</p>
+        <div className="ml-[10px] flex gap-2">
           {params.category.map((cat: Category) => {
-            return <p className=" text-yellow-300">{cat}</p>;
+            return <p className="text-yellow-300">{cat}</p>;
           })}
         </div>
       </div>
@@ -31,7 +31,12 @@ const Blog = (params: Blog) => {
           <Link href={`/Blogs/${params.id}`}>
             <h1 className="text-[25px] font-bold">{params.title}</h1>
           </Link>
-          <p className="opacity-70">{params.description}</p>
+          <p
+            className="opacity-70"
+            dangerouslySetInnerHTML={{
+              __html: truncateText(params.description, 25),
+            }}
+          />
         </div>
         <img
           src={params.poster}
