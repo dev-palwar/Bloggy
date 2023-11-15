@@ -1,12 +1,15 @@
 "use client";
 import type { Metadata } from "next";
+import dotenv from "dotenv"
 import "./globals.css";
 import { Roboto } from "next/font/google";
 import ResponsiveAppBar from "@/Components/Navbar";
 const inter = Roboto({ subsets: ["latin"], weight: ["400", "700"] });
 import { ApolloProvider } from "@apollo/client";
-import client from "@/API/Apollo/client";
+import client from "@/API/Apollo/config";
 import { usePathname } from "next/navigation";
+
+dotenv.config();
 
 // export const metadata: Metadata = {
 //   title: "Bloggy",

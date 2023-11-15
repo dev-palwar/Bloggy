@@ -7,7 +7,6 @@ interface User {
 
 export const getLoggedInUser = (): User => {
   const token = localStorage.getItem("auth_token") as string;
-  if (token == null) window.location.href = "/login";
   const { decodedToken } = jwtDecode(token);
   const user = {
     userId: decodedToken.userId,
