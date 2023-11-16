@@ -1,7 +1,6 @@
 "use client";
 import { AllBlogs } from "@/API/GraphQl/blog";
 import Blog from "@/Components/Card";
-import BasicModal from "@/Components/Modale";
 import { useQuery } from "@apollo/client";
 import { LinearProgress } from "@mui/material";
 import React from "react";

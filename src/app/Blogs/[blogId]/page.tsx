@@ -10,6 +10,8 @@ import { jwtDecode } from "@/lib/jwt";
 import Link from "next/link";
 import Error from "@/Components/Error";
 import BasicModal from "@/Components/Modale";
+import DeleteIcon from '@mui/icons-material/Delete';
+
 
 export default function Page({ params }: IDS) {
   const blogId = params.blogId;
@@ -68,7 +70,7 @@ export default function Page({ params }: IDS) {
             <>
               <h1 className="text-[3rem] font-bold mb-5">{blogData?.title}</h1>
               <div className="flex justify-between items-start">
-                <div className="flex gap-2 items-center mb-[1rem]">
+                <div className="flex gap-[15px] items-center mb-[1rem]">
                   <div className="h-[35px] w-[35px]">
                     <Link href={`/profile/${blogData?.author.id}`}>
                       <img
@@ -97,6 +99,7 @@ export default function Page({ params }: IDS) {
                     />
                   )}
                   <p className="ml-1">{blogData?.upvotes?.length ?? 0}</p>
+                  <p></p>
                 </div>
               </div>
               <div className="h-[55vh] overflow-hidden mb-8">

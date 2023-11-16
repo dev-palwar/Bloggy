@@ -3,6 +3,7 @@ module.exports = {
   images: {
     domains: [
       "images.unsplash.com",
+      "firebasestorage.googleapis.com",
       "media.istockphoto.com",
       "miro.medium.com",
       "s8d7.turboimg.net",
