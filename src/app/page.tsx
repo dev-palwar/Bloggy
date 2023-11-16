@@ -7,9 +7,10 @@ import React from "react";
 
 export default function Page() {
   const [blogData, setBlogData] = React.useState<Blog[] | undefined>();
-  const { loading, data, error } = useQuery(AllBlogs);
+  const { loading, data, refetch } = useQuery(AllBlogs);
 
   React.useEffect(() => {
+    refetch();
     if (data) setBlogData(data?.blogs);
   }, [data]);
 

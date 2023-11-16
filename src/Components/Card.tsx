@@ -1,4 +1,4 @@
-import { formateDate, truncateText } from "@/lib/formateDate";
+import { formateDate, truncateText } from "@/lib/App";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -42,7 +42,7 @@ const Blog = (params: Blog) => {
           src={params.poster}
           height={100}
           width={200}
-          alt="user"
+          alt="poster"
           className="h-fit"
         />
       </div>

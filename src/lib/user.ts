@@ -1,21 +1,16 @@
-import { jwtDecode } from "./jwt";
-
-interface User {
-  userId: string;
-  name: string;
-}
-
-export const getLoggedInUser = (): User => {
-  const token = localStorage.getItem("auth_token") as string;
-  const { decodedToken } = jwtDecode(token);
-  const user = {
-    userId: decodedToken.userId,
-    name: decodedToken.name,
-  };
-  return user;
-};
-
-export const setUser = (token: string) => {
+export const setLoggedInUser = (token: string): boolean => {
   localStorage.setItem("auth_token", token);
   return true;
+};
+
+export const getLoggedInUser = (): LoggedInUser | undefined => {
+  const token = localStorage.getItem("auth_token") as string;
+
+  if (token != null) {
+    const base64Url = token.split(".")[1];
+    const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+    const decodedToken = JSON.parse(window.atob(base64));
+
+    return decodedToken;
+  }
 };

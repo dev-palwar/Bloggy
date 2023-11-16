@@ -1,12 +1,12 @@
 interface Author {
   id: string;
   name: string;
-  bio: string;
-  nationality: string;
-  avatar: string;
-  blogs: Blog[];
-  following: User[];
-  followers: User[];
+  bio?: string;
+  nationality?: string;
+  avatar?: string;
+  blogs?: Blog[];
+  following?: User[];
+  followers?: User[];
 }
 
 interface User {

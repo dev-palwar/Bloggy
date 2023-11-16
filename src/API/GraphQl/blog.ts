@@ -24,17 +24,27 @@ export const getBlog = gql`
     Blog: findBlog(input: $input) {
       id
       title
-      description
       poster
+      description
       createdAt
       category
+      author {
+        id
+        avatar
+        name
+        createdAt
+      }
       upvotes {
         id
       }
-      author {
+      comments {
         id
-        name
-        avatar
+        comment
+        author {
+          id
+          avatar
+          name
+        }
       }
     }
   }
@@ -49,5 +59,23 @@ export const upvotingBlog = gql`
 export const addBlog = gql`
   mutation CreateBlog($input: BlogInput!) {
     ID: createBlog(input: $input)
+  }
+`;
+
+export const deleteBlogQuery = gql`
+  mutation DeleteBlog($input: ID!) {
+    deleted: deleteBlog(input: $input)
+  }
+`;
+
+export const addComment = gql`
+  mutation AddCommentToBlog($input: AddComment!) {
+    comment: addCommentToBlog(input: $input)
+  }
+`;
+
+export const deleteCommentQuery = gql`
+  mutation DeleteComment($input: ID!) {
+    deleted: deleteComment(input: $input)
   }
 `;

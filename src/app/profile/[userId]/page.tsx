@@ -3,21 +3,22 @@ import React from "react";
 import { context, variables } from "@/API/GraphQl/context";
 import { followUnfollowQuery, getProfile } from "@/API/GraphQl/user";
 import Blog from "@/Components/Card";
-import { jwtDecode } from "@/lib/jwt";
 import { useMutation, useQuery } from "@apollo/client";
 import { Button } from "@mui/material";
 import LinearProgress from "@mui/material/LinearProgress";
 import Link from "next/link";
+import { getLoggedInUser } from "@/lib/user";
+import { useRouter } from "next/navigation";
 
 export default function Page({ params }: IDS) {
+  const router = useRouter();
   const [ifFollows, setIfFollows] = React.useState<Boolean>(false);
   const [userData, setUserData] = React.useState<Author | undefined>();
 
   // Take care of it
-  const token = localStorage.getItem("auth_token") as string;
-  const { decodedToken } = jwtDecode(token);
+  const loggedInUser = getLoggedInUser();
 
-  const { loading, error, data, refetch } = useQuery(
+  const { loading, data, refetch } = useQuery(
     getProfile,
     variables(params.userId)
   );
@@ -30,18 +31,27 @@ export default function Page({ params }: IDS) {
     },
   });
 
-  const handleFollow = (userId: string) => followPayload(variables(userId));
+  const handleFollow = (userId: string) => {
+    if (loggedInUser) {
+      followPayload(variables(userId));
+    } else {
+      router.push("/login");
+    }
+  };
 
   React.useEffect(() => {
     refetch();
     if (data) {
       setUserData(data?.Profile);
-      // Checks if the currently logged-in user is following the user
-      setIfFollows(
-        data?.Profile?.followers.some(
-          (follower: User) => follower.id === decodedToken.userId
-        )
-      );
+      // Checks if the currently logged-in user is following the user 
+      // only when the logged in user is present
+      if (loggedInUser) {
+        setIfFollows(
+          data?.Profile?.followers.some(
+            (follower: User) => follower.id === loggedInUser.userId
+          )
+        );
+      }
     }
   }, [data, followStatus]);
 
@@ -69,7 +79,7 @@ export default function Page({ params }: IDS) {
                 ))}
               </div>
             </div>
-            <div className="Alert-section pl-[10px] flex flex-col h-[100vh] w-[45vh] sticky top-0">
+            <div className="Alert-section pl-[10px] flex flex-col h-full w-[45vh] sticky top-[5rem]">
               <div className="user-details-section flex flex-col p-[1rem]">
                 <div className="h-[12vh] w-[12vh] mb-3">
                   <img
@@ -84,7 +94,7 @@ export default function Page({ params }: IDS) {
                 </p>
                 <p className="mb-3">{userData?.bio}</p>
                 <div className="flex gap-2">
-                  {decodedToken.userId != params.userId && (
+                  {loggedInUser?.userId != params.userId && (
                     <>
                       <Button
                         variant="contained"

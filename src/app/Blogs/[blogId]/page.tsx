@@ -1,27 +1,29 @@
 "use client";
 import React from "react";
-import { getBlog, upvotingBlog } from "@/API/GraphQl/blog";
-import { formateDate } from "@/lib/formateDate";
+import { deleteBlogQuery, getBlog, upvotingBlog } from "@/API/GraphQl/blog";
+import { formateDate } from "@/lib/App";
 import { useMutation, useQuery } from "@apollo/client";
 import { LinearProgress } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { context, variables } from "@/API/GraphQl/context";
-import { jwtDecode } from "@/lib/jwt";
 import Link from "next/link";
 import Error from "@/Components/Error";
 import BasicModal from "@/Components/Modale";
-import DeleteIcon from '@mui/icons-material/Delete';
-
+import DeleteIcon from "@mui/icons-material/Delete";
+import { getLoggedInUser } from "@/lib/user";
+import { useRouter } from "next/navigation";
+import { CommentComponent } from "@/Components/Comments";
 
 export default function Page({ params }: IDS) {
+  const router = useRouter();
   const blogId = params.blogId;
 
+  // take care of it
+  const loggedInUser = getLoggedInUser();
+
+  const [userLoggedIn, setUserLoggedIn] = React.useState<boolean>();
   const [ifLiked, setIfLiked] = React.useState<boolean>(false);
   const [blogData, setBlogData] = React.useState<Blog | undefined>();
-
-  // take care of it
-  const token = localStorage.getItem("auth_token") as string;
-  const { decodedToken } = jwtDecode(token);
 
   const { loading, data, error, refetch } = useQuery(
     getBlog,
@@ -36,35 +38,50 @@ export default function Page({ params }: IDS) {
     },
   });
 
+  const [deletePayload, deleteState] = useMutation(deleteBlogQuery, context());
+
+  const handleDeleteAction = () => {
+    deletePayload(variables(blogId));
+    if (deleteState.data?.deleted)
+      router.push(`/profile/${loggedInUser?.userId}`);
+  };
+
+  const handleUpvote = () => {
+    if (loggedInUser) {
+      payloadForUpvote(variables(blogId));
+    } else {
+      router.push("/login");
+    }
+  };
+
   React.useEffect(() => {
+    refetch();
     if (data) {
       setBlogData(data?.Blog);
       setIfLiked(
         data?.Blog?.upvotes.some(
-          (users: any) => users.id === decodedToken.userId
+          (users: User) => users.id === loggedInUser?.userId
         )
       );
+      if (loggedInUser) {
+        if (blogData?.author.id == loggedInUser?.userId) setUserLoggedIn(true);
+      }
     }
-  }, [data, upvoteState]);
 
-  const handleUpvote = () => payloadForUpvote(variables(blogId));
+    if (deleteState.data?.deleted)
+      router.push(`/profile/${loggedInUser?.userId}`);
+  }, [data, upvoteState, deleteState]);
 
   return (
     <>
-      {loading ? (
+      {loading || deleteState.loading ? (
         <LinearProgress />
       ) : (
         <div className="container">
           {error ? (
             <BasicModal
               click={true}
-              children={
-                <Error
-                  message={
-                    "Internal server error. Please contact the developer"
-                  }
-                />
-              }
+              children={<Error message={"This blog was deleted"} />}
             />
           ) : (
             <>
@@ -84,22 +101,30 @@ export default function Page({ params }: IDS) {
                     {blogData?.author?.name}
                   </p>
                   <p className="">{formateDate(blogData?.createdAt ?? "")}</p>
-                  {blogData?.category.map((cat: Category) => (
-                    <p className="text-yellow-500 ml-[1rem]">{cat}</p>
+                  {blogData?.category.map((cat: Category, index: number) => (
+                    <p key={index} className="text-yellow-500 ml-[1rem]">
+                      {cat}
+                    </p>
                   ))}
                 </div>
-                <div className="flex items-center gap-1" onClick={handleUpvote}>
+                <div className="flex items-center gap-1">
                   {upvoteState.loading ? (
                     ""
                   ) : (
-                    <FavoriteIcon
-                      className={`cursor-pointer ${
-                        ifLiked ? "text-red-500" : ""
-                      }`}
-                    />
+                    <div onClick={handleUpvote}>
+                      <FavoriteIcon
+                        className={`cursor-pointer ${
+                          ifLiked ? "text-red-500" : ""
+                        }`}
+                      />
+                    </div>
                   )}
                   <p className="ml-1">{blogData?.upvotes?.length ?? 0}</p>
-                  <p></p>
+                  {userLoggedIn && (
+                    <div onClick={handleDeleteAction}>
+                      <DeleteIcon />
+                    </div>
+                  )}
                 </div>
               </div>
               <div className="h-[55vh] overflow-hidden mb-8">
@@ -113,10 +138,13 @@ export default function Page({ params }: IDS) {
               </div>
               {blogData?.description && (
                 <p
-                  className="text-[1.4rem]"
+                  className="text-[1.4rem] border-b-2 border-solid border-purple-500 pb-8
+                  "
                   dangerouslySetInnerHTML={{ __html: blogData?.description }}
                 />
               )}
+
+              <CommentComponent commentsArr={blogData?.comments} />
             </>
           )}
         </div>

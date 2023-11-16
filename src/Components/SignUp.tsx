@@ -5,7 +5,6 @@ import { Avatar, TextField, Typography, Box, Button } from "@mui/material";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { uploadImg } from "@/lib/uploadImg";
-import { useRouter } from "next/navigation";
 
 export default function SignUp() {
   const formRef = React.useRef<HTMLFormElement | null>(null);
@@ -25,25 +24,42 @@ export default function SignUp() {
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    setLoading(true);
     event.preventDefault();
-    const dataa = new FormData(event.currentTarget);
 
-    if (userImage) {
+    // Access form data
+    const formData = new FormData(event.currentTarget);
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+    const name = formData.get("name") as string;
+    const bio = formData.get("bio") as string;
+    const nationality = formData.get("nationality") as string;
+
+    // Checks if required fields are filled
+    if (!email || !password || !name || !bio || !nationality || !userImage) {
+      toast.error("Please fill in all required fields.");
+      return;
+    }
+
+    setLoading(true);
+
+    // Proceeds with API call
+    try {
       const userImageUrl = await uploadImg(userImage, "users");
 
       signUpPayload({
         variables: {
           input: {
-            name: dataa.get("name"),
-            email: dataa.get("email"),
-            password: dataa.get("password"),
-            bio: dataa.get("bio"),
-            nationality: dataa.get("nationality"),
+            name,
+            email,
+            password,
+            bio,
+            nationality,
             avatar: userImageUrl,
           },
         },
       });
+    } catch (error) {
+      toast.error("Error while creating account");
     }
   };
 
@@ -56,8 +72,8 @@ export default function SignUp() {
         formRef.current.reset();
       }
 
-      setUserImage(null); // Reset the userImage state
-      setDp(undefined); // Reset the dp state
+      setUserImage(null); // Resets the userImage state
+      setDp(undefined); // Resets the dp state
     }
     if (error) {
       setLoading(false);
@@ -82,6 +98,7 @@ export default function SignUp() {
             src={dp}
           ></Avatar>
           <input
+            required
             type="file"
             id="avatar-input"
             accept="image/*"

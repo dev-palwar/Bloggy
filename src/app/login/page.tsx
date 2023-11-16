@@ -15,8 +15,10 @@ import { useMutation } from "@apollo/client";
 import { Login } from "@/API/GraphQl/user";
 import BasicModal from "@/Components/Modale";
 import { useRouter } from "next/navigation";
-import { setUser } from "@/lib/user";
+import { setLoggedInUser } from "@/lib/user";
 import SignUp from "@/Components/SignUp";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const defaultTheme = createTheme();
 
@@ -27,24 +29,43 @@ export default function SignInSide() {
 
   const [loginPayload, { loading, error, data }] = useMutation(Login);
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const dataa = new FormData(event.currentTarget);
+
+    // Accesses form data
+    const formData = new FormData(event.currentTarget);
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+
+    // Checks if required fields are filled
+    if (!email || !password) {
+      toast.error("Please fill in all required fields.");
+      return;
+    }
+
+    // Proceeds with API call
     loginPayload({
       variables: {
         input: {
-          email: dataa.get("email") as string,
-          password: dataa.get("password") as string,
+          email,
+          password,
         },
       },
     });
 
-    if (data) if (setUser(data.login.token)) router.push("/");
+    if (data) {
+      setLoggedInUser(data.login.token);
+      router.push("/");
+    }
   };
+
+  React.useEffect(() => {
+    if (error) toast.error(error.message);
+  }, [handleSubmit]);
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      {error && <BasicModal children={error.message} click={true} />}
+      <ToastContainer />
       <Grid container component="main" sx={{ height: "100vh" }}>
         <CssBaseline />
         <Grid

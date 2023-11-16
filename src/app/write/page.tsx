@@ -28,15 +28,6 @@ const categories = [
   "GAMING",
 ];
 
-interface BlogPayload {
-  input: {
-    title: string;
-    description: string;
-    category: string;
-    poster: File | null;
-  };
-}
-
 export default function Page() {
   const router = useRouter();
   const [loading, setLoading] = useState<Boolean>();
@@ -74,7 +65,7 @@ export default function Page() {
         },
       });
     } catch (error) {
-      setLoading(false)
+      setLoading(false);
       toast.error("Error submitting the form");
     }
   };
@@ -90,9 +81,9 @@ export default function Page() {
     }
     if (error) {
       setLoading(false);
-      // Handle the error, e.g., display an error toast
-      console.error("Mutation error:", error);
-      toast.error("Mutation error");
+      toast.error(
+        "Failed to upload blog. Make sure all the details are filled in"
+      );
     }
   }, [data, error]);
 
@@ -114,9 +105,10 @@ export default function Page() {
         />
         <input type="file" onChange={(ev) => setFiles(ev.target.files)} />
         <select
+          required
           value={selectedCategory}
           onChange={handleCategoryChange}
-          className="mb-4 p-2 bg-transparent"
+          className="mb-4 bg-transparent mt-[1rem]"
         >
           <option value="">Select a category</option>
           {categories.map((category, index) => (

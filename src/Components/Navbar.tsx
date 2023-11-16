@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
@@ -14,37 +13,34 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import Link from "next/link";
-import { jwtDecode } from "@/lib/jwt";
 import { logout } from "@/lib/logout";
 import EditIcon from "@mui/icons-material/Edit";
+import { getLoggedInUser } from "@/lib/user";
+import { useRouter } from "next/navigation";
 
 const pages = ["Products", "Pricing", "Blog"];
 const settings = ["Profile", "Logout"];
 
-type User = {
-  avatar: string;
-  name: string;
-  id: string | null;
-};
-
 export default function ResponsiveAppBar() {
-  const [user, setUser] = React.useState<User>({
+  const router = useRouter();
+  
+  const [user, setUser] = React.useState<LoggedInUser>({
     avatar: "",
-    name: "",
-    id: null,
+    userId: "",
+    email: ""
   });
 
   const token = localStorage.getItem("auth_token") as string;
 
   React.useEffect(() => {
-    if (token != null) {
-      const { decodedToken } = jwtDecode(token);
-      console.log(decodedToken);
+    const loggedInUser = getLoggedInUser();
+    if (loggedInUser) {
+      console.log(loggedInUser);
 
       setUser({
-        id: decodedToken.userId,
-        name: decodedToken.name,
-        avatar: decodedToken.avatar,
+        userId: loggedInUser.userId,
+        avatar: loggedInUser.avatar,
+        email: loggedInUser.email,
       });
     }
   }, [token]);
@@ -56,20 +52,15 @@ export default function ResponsiveAppBar() {
     null
   );
 
-  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
+  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) =>
     setAnchorElNav(event.currentTarget);
-  };
-  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+
+  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) =>
     setAnchorElUser(event.currentTarget);
-  };
 
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
+  const handleCloseNavMenu = () => setAnchorElNav(null);
 
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
+  const handleCloseUserMenu = () => setAnchorElUser(null);
 
   return (
     <Container className="sticky top-0 max-w-[81vw] bg-white z-10">
@@ -146,20 +137,20 @@ export default function ResponsiveAppBar() {
         </Box>
 
         <EditIcon />
-        <Link href={"/write"}>
+        <Link href={getLoggedInUser() ? "/write" : "/login"}>
           <Typography marginLeft={0.1} marginRight={3} ml={1}>
             Add a blog
           </Typography>
         </Link>
         <Box sx={{ flexGrow: 0 }}>
-          {user.id == null ? (
+          {!user.userId ? (
             <Link href={"/login"}>
               <h1 className="cursor-pointer">Login</h1>
             </Link>
           ) : (
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt={user.name} src={user.avatar} />
+                <Avatar src={user.avatar} />
               </IconButton>
             </Tooltip>
           )}
@@ -187,7 +178,7 @@ export default function ResponsiveAppBar() {
                     <Typography textAlign="center">{setting}</Typography>
                   </button>
                 ) : (
-                  <Link href={`/${setting.toLowerCase()}/${user.id}`}>
+                  <Link href={`/${setting.toLowerCase()}/${user.userId}`}>
                     <Typography textAlign="center">{setting}</Typography>
                   </Link>
                 )}

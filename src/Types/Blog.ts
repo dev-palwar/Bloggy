@@ -7,15 +7,7 @@ interface Blog {
   author: User;
   category: Category[];
   upvotes?: Author[];
-  comments?: Comment[];
-}
-
-interface Comment {
-  id: string;
-  comment: string;
-  user: User;
-  upvotes?: User[];
-  createdAt: string;
+  comments: Comments[]
 }
 
 enum Category {
