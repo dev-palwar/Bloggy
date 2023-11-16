@@ -13,10 +13,6 @@
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@mui/material": "^5.14.17",
-<<<<<<< HEAD
-=======
-    "dotenv": "^16.3.1",
->>>>>>> 374a246e5c641fd3844162951257e993c8e97e12
     "firebase": "^10.6.0",
     "graphql": "^16.8.1",
     "next": "14.0.1",
