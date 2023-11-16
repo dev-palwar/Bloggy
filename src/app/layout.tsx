@@ -8,7 +8,6 @@ import { ApolloProvider } from "@apollo/client";
 import client from "@/API/Apollo/config";
 import { usePathname } from "next/navigation";
 
-
 // export const metadata: Metadata = {
 //   title: "Bloggy",
 //   description: "A blogging plateform",
