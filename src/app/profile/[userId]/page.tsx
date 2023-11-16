@@ -1,4 +1,5 @@
 "use client";
+import React from "react";
 import { context, variables } from "@/API/GraphQl/context";
 import { followUnfollowQuery, getProfile } from "@/API/GraphQl/user";
 import Blog from "@/Components/Card";
@@ -7,7 +8,6 @@ import { useMutation, useQuery } from "@apollo/client";
 import { Button } from "@mui/material";
 import LinearProgress from "@mui/material/LinearProgress";
 import Link from "next/link";
-import React from "react";
 
 export default function Page({ params }: IDS) {
   const [ifFollows, setIfFollows] = React.useState<Boolean>(false);

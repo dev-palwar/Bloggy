@@ -26,7 +26,7 @@ const Blog = (params: Blog) => {
           })}
         </div>
       </div>
-      <div className="content flex gap-[25px]">
+      <div className="content flex justify-between gap-[25px]">
         <div className="flex flex-col gap-2">
           <Link href={`/Blogs/${params.id}`}>
             <h1 className="text-[25px] font-bold">{params.title}</h1>
