@@ -8,6 +8,11 @@ import { usePathname } from "next/navigation";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { getLoggedInUser } from "@/lib/user";
+import { formateDate } from "@/lib/App";
+import Image from "next/image";
+import BasicModal from "./Modale";
+import { error } from "console";
 
 interface CommentComponentParams {
   commentsArr: Comments[] | undefined;
@@ -87,26 +92,37 @@ const Comments = ({ commentObj }: { commentObj: Comments }) => {
   }, [deleteComment]);
 
   return (
-    <div key={commentObj.id} className="comments mt-[2rem]">
-      <div className="comment p-[1rem] border mb-[1rem]">
+    <div key={commentObj.id} className="comments">
+      {deleteCommentState.error && (
+        <BasicModal click={true} children={deleteCommentState.error.message} />
+      )}
+      <div className="comment p-[1rem]">
         <div className="author-info flex items-center justify-between mb-[10px]">
-          <div className="flex gap-3 items-center">
+          <div className="flex gap-[10px] items-center">
             <Link href={`/profile/${commentObj.author.id}`}>
               <div className="h-[35px] w-[35px]">
-                <img
-                  src={commentObj.author.avatar}
+                <Image
+                  height={200}
+                  width={200}
+                  src={commentObj.author.avatar || ""}
+                  alt={commentObj.author.name}
                   className="h-full w-full object-cover rounded-full"
                 />
               </div>
             </Link>
             <p>{commentObj.author.name}</p>
+            <p className="opacity-50 text-[15px]">
+              {formateDate(commentObj.createdAt.toString())}
+            </p>
           </div>
           <div
             onClick={() => deleteComment(commentObj.id)}
             className="cursor-pointer
             "
           >
-            <DeleteIcon />
+            {getLoggedInUser()?.userId == commentObj.author.id && (
+              <DeleteIcon />
+            )}
           </div>
         </div>
         <p>{commentObj.comment}</p>

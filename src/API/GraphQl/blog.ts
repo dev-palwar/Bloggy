@@ -40,6 +40,7 @@ export const getBlog = gql`
       comments {
         id
         comment
+        createdAt
         author {
           id
           avatar

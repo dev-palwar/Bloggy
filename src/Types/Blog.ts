@@ -1,13 +1,13 @@
 interface Blog {
   id: string;
   title: string;
-  poster?: string;
+  poster: string;
   createdAt: string;
   description: string;
   author: User;
   category: Category[];
   upvotes?: Author[];
-  comments: Comments[]
+  comments?: Comments[]
 }
 
 enum Category {

@@ -38,7 +38,7 @@ const Blog = (params: Blog) => {
             }}
           />
         </div>
-        <img
+        <Image
           src={params.poster}
           height={100}
           width={200}

@@ -13,6 +13,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { getLoggedInUser } from "@/lib/user";
 import { useRouter } from "next/navigation";
 import { CommentComponent } from "@/Components/Comments";
+import Image from "next/image";
 
 export default function Page({ params }: IDS) {
   const router = useRouter();
@@ -90,9 +91,11 @@ export default function Page({ params }: IDS) {
                 <div className="flex gap-[15px] items-center mb-[1rem]">
                   <div className="h-[35px] w-[35px]">
                     <Link href={`/profile/${blogData?.author.id}`}>
-                      <img
-                        src={blogData?.author?.avatar}
+                      <Image
+                        src={blogData?.author?.avatar || ""}
                         alt="user"
+                        height={200}
+                        width={200}
                         className="object-cover h-full w-full rounded-full"
                       />
                     </Link>
@@ -116,20 +119,20 @@ export default function Page({ params }: IDS) {
                         className={`cursor-pointer ${
                           ifLiked ? "text-red-500" : ""
                         }`}
-                      />
+                      /> 
                     </div>
                   )}
                   <p className="ml-1">{blogData?.upvotes?.length ?? 0}</p>
                   {userLoggedIn && (
-                    <div onClick={handleDeleteAction}>
+                    <div onClick={handleDeleteAction} className="ml-[1rem] cursor-pointer">
                       <DeleteIcon />
                     </div>
                   )}
                 </div>
               </div>
               <div className="h-[55vh] overflow-hidden mb-8">
-                <img
-                  src={blogData?.poster}
+                <Image
+                  src={blogData?.poster || ""}
                   alt="poster"
                   width={200}
                   height={500}

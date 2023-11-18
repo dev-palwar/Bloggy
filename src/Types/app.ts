@@ -15,4 +15,5 @@ interface Comments {
   id: string;
   comment: string;
   author: User;
+  createdAt: String;
 }

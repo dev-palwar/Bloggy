@@ -30,20 +30,26 @@ export default function ResponsiveAppBar() {
     email: ""
   });
 
-  const token = localStorage.getItem("auth_token") as string;
-
+  
   React.useEffect(() => {
-    const loggedInUser = getLoggedInUser();
-    if (loggedInUser) {
-      console.log(loggedInUser);
+    // Checking if localStorage is available (only runs on the client side)
+    if (typeof window !== 'undefined') {
+      const token = localStorage.getItem("auth_token") as string;
 
-      setUser({
-        userId: loggedInUser.userId,
-        avatar: loggedInUser.avatar,
-        email: loggedInUser.email,
-      });
+      if (token) {
+        const loggedInUser = getLoggedInUser();
+        if (loggedInUser) {
+          console.log(loggedInUser);
+
+          setUser({
+            userId: loggedInUser.userId,
+            avatar: loggedInUser.avatar,
+            email: loggedInUser.email,
+          });
+        }
+      }
     }
-  }, [token]);
+  }, []);
 
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
