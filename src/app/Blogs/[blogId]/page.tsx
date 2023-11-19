@@ -19,7 +19,6 @@ export default function Page({ params }: IDS) {
   const router = useRouter();
   const blogId = params.blogId;
 
-  // take care of it
   const loggedInUser = getLoggedInUser();
 
   const [userLoggedIn, setUserLoggedIn] = React.useState<boolean>();
@@ -76,7 +75,7 @@ export default function Page({ params }: IDS) {
   return (
     <>
       {loading || deleteState.loading ? (
-        <LinearProgress />
+        <div className="container"> <LinearProgress /> </div>
       ) : (
         <div className="container">
           {error ? (
@@ -119,12 +118,15 @@ export default function Page({ params }: IDS) {
                         className={`cursor-pointer ${
                           ifLiked ? "text-red-500" : ""
                         }`}
-                      /> 
+                      />
                     </div>
                   )}
                   <p className="ml-1">{blogData?.upvotes?.length ?? 0}</p>
                   {userLoggedIn && (
-                    <div onClick={handleDeleteAction} className="ml-[1rem] cursor-pointer">
+                    <div
+                      onClick={handleDeleteAction}
+                      className="ml-[1rem] cursor-pointer"
+                    >
                       <DeleteIcon />
                     </div>
                   )}

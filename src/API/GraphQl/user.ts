@@ -32,6 +32,9 @@ export const getProfile = gql`
         poster
         id
         description
+        upvotes {
+          id
+        }
         createdAt
         author {
           name

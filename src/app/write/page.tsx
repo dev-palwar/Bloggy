@@ -122,7 +122,7 @@ export default function Page() {
           type="submit"
           variant="contained"
           color="success"
-          className="p-[1rem] rounded-xl"
+          className="p-[1rem] rounded-xl mt-[1rem]"
         >
           Post
         </Button>

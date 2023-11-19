@@ -19,7 +19,7 @@ export default function Page() {
       {loading ? (
         <LinearProgress />
       ) : (
-        <div className="Blog-section flex flex-col items-center">
+        <div className="Blog-section flex flex-col items-center mb-5">
           {blogData?.map((value: Blog) => (
             <Blog
               key={value.id}
@@ -29,6 +29,7 @@ export default function Page() {
               poster={value.poster}
               category={value.category}
               author={value.author}
+              upvotes={value.upvotes}
               createdAt={value.createdAt}
             />
           ))}

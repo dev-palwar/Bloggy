@@ -16,7 +16,6 @@ export default function Page({ params }: IDS) {
   const [ifFollows, setIfFollows] = React.useState<Boolean>(false);
   const [userData, setUserData] = React.useState<Author | undefined>();
 
-  // Take care of it
   const loggedInUser = getLoggedInUser();
 
   const { loading, data, refetch } = useQuery(
@@ -44,7 +43,7 @@ export default function Page({ params }: IDS) {
     refetch();
     if (data) {
       setUserData(data?.Profile);
-      // Checks if the currently logged-in user is following the user 
+      // Checks if the currently logged-in user is following the user
       // only when the logged in user is present
       if (loggedInUser) {
         setIfFollows(
@@ -59,7 +58,9 @@ export default function Page({ params }: IDS) {
   return (
     <>
       {loading ? (
-        <LinearProgress />
+        <div className="container">
+          <LinearProgress />
+        </div>
       ) : (
         <div className="container">
           <div className="home-section flex justify-evenly">
@@ -75,6 +76,7 @@ export default function Page({ params }: IDS) {
                     poster={value.poster}
                     author={value.author}
                     createdAt={value.createdAt}
+                    upvotes={value.upvotes}
                     category={value.category}
                   />
                 ))}
@@ -84,8 +86,8 @@ export default function Page({ params }: IDS) {
               <div className="user-details-section flex flex-col p-[1rem]">
                 <div className="h-[12vh] w-[12vh] mb-3">
                   <Image
-                  height={200}
-                  width={200}
+                    height={200}
+                    width={200}
                     src={userData?.avatar || ""}
                     alt="user"
                     className="object-cover rounded-full h-full w-full"
@@ -121,11 +123,11 @@ export default function Page({ params }: IDS) {
                       <Link href={`/profile/${user.id}`}>
                         <div>
                           <Image
-                          height={200}
-                          width={35}
+                            height={100}
+                            width={35}
                             alt={user.name}
                             src={user?.avatar || ""}
-                            className="rounded-full object-cover"
+                            className="h-[35px] rounded-full object-cover"
                           />
                         </div>
                       </Link>
@@ -141,8 +143,8 @@ export default function Page({ params }: IDS) {
                     <div className="flex opacity-80 text-[15px] items-center gap-3 ">
                       <Link href={`/profile/${user.id}`}>
                         <Image
-                        height={100}
-                        width={35}
+                          height={100}
+                          width={35}
                           alt={user.name}
                           src={user?.avatar || ""}
                           className="h-[35px] rounded-full object-cover"

@@ -6,15 +6,18 @@ export const AllBlogs = gql`
       title
       createdAt
       category
+      description
+      id
+      poster
+      upvotes {
+        id
+      }
       author {
         id
         name
         createdAt
         avatar
       }
-      description
-      id
-      poster
     }
   }
 `;

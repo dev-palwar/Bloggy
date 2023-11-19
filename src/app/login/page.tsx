@@ -65,6 +65,7 @@ export default function SignInSide() {
 
   return (
     <ThemeProvider theme={defaultTheme}>
+      <BasicModal click={true} children={<TestUser />} />
       <ToastContainer />
       <Grid container component="main" sx={{ height: "100vh" }}>
         <CssBaseline />
@@ -152,3 +153,17 @@ export default function SignInSide() {
     </ThemeProvider>
   );
 }
+
+const TestUser = () => {
+  return (
+    <div className="">
+      Email and password for the test user
+      <br />
+      <div className="mt-3">
+        Email: test@mail
+        <br />
+        password: test@123
+      </div>
+    </div>
+  );
+};

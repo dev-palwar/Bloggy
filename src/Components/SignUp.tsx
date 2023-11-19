@@ -34,18 +34,30 @@ export default function SignUp() {
     const bio = formData.get("bio") as string;
     const nationality = formData.get("nationality") as string;
 
+    // Check if userImage is available
+    let userImageUrl: string | undefined;
+    if (userImage) {
+      try {
+        userImageUrl = await uploadImg(userImage, "users");
+      } catch (error) {
+        toast.error("Error while uploading image");
+        return;
+      }
+    } else {
+      // Sets a random avatar if userImage is not available
+      userImageUrl = `https://api.multiavatar.com/${name}.svg`;
+    }
+
     // Checks if required fields are filled
-    if (!email || !password || !name || !bio || !nationality || !userImage) {
+    if (!email || !password || !name || !bio || !nationality) {
       toast.error("Please fill in all required fields.");
       return;
     }
 
+    // Proceeds with API call
     setLoading(true);
 
-    // Proceeds with API call
     try {
-      const userImageUrl = await uploadImg(userImage, "users");
-
       signUpPayload({
         variables: {
           input: {
