@@ -119,7 +119,10 @@ export default function Page({ params }: IDS) {
                 <h1 className="font-bold pb-[10px] border-b-2">Following</h1>
                 {userData?.following?.map((user: User) => {
                   return (
-                    <div className="flex opacity-80 text-[15px] items-center gap-3 ">
+                    <div
+                      key={user.id}
+                      className="flex opacity-80 text-[15px] items-center gap-3 "
+                    >
                       <Link href={`/profile/${user.id}`}>
                         <div>
                           <Image
@@ -140,7 +143,7 @@ export default function Page({ params }: IDS) {
                 <h1 className="font-bold pb-[10px] border-b-2">Followers</h1>
                 {userData?.followers?.map((user: User) => {
                   return (
-                    <div className="flex opacity-80 text-[15px] items-center gap-3 ">
+                    <div key={user.id} className="flex opacity-80 text-[15px] items-center gap-3 ">
                       <Link href={`/profile/${user.id}`}>
                         <Image
                           height={100}

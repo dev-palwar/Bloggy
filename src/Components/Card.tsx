@@ -23,8 +23,12 @@ const Blog = (params: Blog) => {
           <h1>{params.author.name}</h1>
           <p className="opacity-70">{formateDate(params.createdAt)}</p>
           <div className="ml-[10px] flex gap-2">
-            {params.category.map((cat: Category) => {
-              return <p className="text-blue-300">{cat}</p>;
+            {params.category.map((cat, index) => {
+              return (
+                <p key={index} className="text-blue-300">
+                  {cat}
+                </p>
+              );
             })}
           </div>
         </div>
