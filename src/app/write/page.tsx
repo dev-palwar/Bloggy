@@ -85,7 +85,7 @@ export default function Page() {
         "Failed to upload blog. Make sure all the details are filled in"
       );
     }
-  }, [data, error]);
+  }, [data, error, router]);
 
   return (
     <div className="container">

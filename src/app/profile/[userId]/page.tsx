@@ -53,7 +53,7 @@ export default function Page({ params }: IDS) {
         );
       }
     }
-  }, [data, followStatus]);
+  }, [data, followStatus, loggedInUser, refetch]);
 
   return (
     <>

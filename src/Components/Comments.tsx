@@ -89,12 +89,12 @@ const Comments = ({ commentObj }: { commentObj: Comments }) => {
 
   React.useEffect(() => {
     if (deleteCommentState.data) toast.success("Comment deleted 👍");
-  }, [deleteComment]);
+  }, [deleteCommentState.data]);
 
   return (
     <div key={commentObj.id} className="comments">
       {deleteCommentState.error && (
-        <BasicModal click={true} children={deleteCommentState.error.message} />
+        <BasicModal click={true}>{deleteCommentState.error.message}</BasicModal>
       )}
       <div className="comment p-[1rem]">
         <div className="author-info flex items-center justify-between mb-[10px]">

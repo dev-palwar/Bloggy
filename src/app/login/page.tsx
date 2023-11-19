@@ -29,43 +29,48 @@ export default function SignInSide() {
 
   const [loginPayload, { loading, error, data }] = useMutation(Login);
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const handleSubmit = React.useCallback(
+    async (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
 
-    // Accesses form data
-    const formData = new FormData(event.currentTarget);
-    const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
+      // Accesses form data
+      const formData = new FormData(event.currentTarget);
+      const email = formData.get("email") as string;
+      const password = formData.get("password") as string;
 
-    // Checks if required fields are filled
-    if (!email || !password) {
-      toast.error("Please fill in all required fields.");
-      return;
-    }
+      // Checks if required fields are filled
+      if (!email || !password) {
+        toast.error("Please fill in all required fields.");
+        return;
+      }
 
-    // Proceeds with API call
-    loginPayload({
-      variables: {
-        input: {
-          email,
-          password,
+      // Proceeds with API call
+      loginPayload({
+        variables: {
+          input: {
+            email,
+            password,
+          },
         },
-      },
-    });
+      });
 
-    if (data) {
-      setLoggedInUser(data.login.token);
-      router.push("/");
-    }
-  };
+      if (data) {
+        setLoggedInUser(data.login.token);
+        router.push("/");
+      }
+    },
+    [loginPayload, data, router]
+  );
 
   React.useEffect(() => {
     if (error) toast.error(error.message);
-  }, [handleSubmit]);
+  }, [handleSubmit, error]);
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      <BasicModal click={true} children={<TestUser />} />
+      <BasicModal click={true}>
+        <TestUser />
+      </BasicModal>
       <ToastContainer />
       <Grid container component="main" sx={{ height: "100vh" }}>
         <CssBaseline />
@@ -147,7 +152,11 @@ export default function SignInSide() {
               </span>
             </p>
           </Box>
-          {signUp && <BasicModal click={true} children={<SignUp />} />}
+          {signUp && (
+            <BasicModal click={true}>
+              <SignUp />
+            </BasicModal>
+          )}
         </Grid>
       </Grid>
     </ThemeProvider>

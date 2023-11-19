@@ -55,34 +55,40 @@ export default function Page({ params }: IDS) {
   };
 
   React.useEffect(() => {
-    refetch();
-    if (data) {
-      setBlogData(data?.Blog);
-      setIfLiked(
-        data?.Blog?.upvotes.some(
-          (users: User) => users.id === loggedInUser?.userId
-        )
-      );
-      if (loggedInUser) {
-        if (blogData?.author.id == loggedInUser?.userId) setUserLoggedIn(true);
+    const fetchData = async () => {
+      await refetch();
+      if (data) {
+        setBlogData(data?.Blog);
+        setIfLiked(
+          data?.Blog?.upvotes.some(
+            (users: User) => users.id === loggedInUser?.userId
+          )
+        );
+        if (loggedInUser) {
+          if (blogData?.author.id === loggedInUser.userId)
+            setUserLoggedIn(true);
+        }
       }
-    }
 
-    if (deleteState.data?.deleted)
-      router.push(`/profile/${loggedInUser?.userId}`);
-  }, [data, upvoteState, deleteState]);
+      if (deleteState.data?.deleted)
+        router.push(`/profile/${loggedInUser?.userId}`);
+    };
+
+    fetchData();
+  }, [data, loggedInUser, refetch, blogData, deleteState, router]);
 
   return (
     <>
       {loading || deleteState.loading ? (
-        <div className="container"> <LinearProgress /> </div>
+        <div className="container">
+          <LinearProgress />
+        </div>
       ) : (
         <div className="container">
           {error ? (
-            <BasicModal
-              click={true}
-              children={<Error message={"This blog was deleted"} />}
-            />
+            <BasicModal click={true}>
+              <Error message={"This blog was deleted"} />
+            </BasicModal>
           ) : (
             <>
               <h1 className="text-[3rem] font-bold mb-5">{blogData?.title}</h1>

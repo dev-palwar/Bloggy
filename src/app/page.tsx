@@ -12,7 +12,7 @@ export default function Page() {
   React.useEffect(() => {
     refetch();
     if (data) setBlogData(data?.blogs);
-  }, [data]);
+  }, [data, refetch]);
 
   return (
     <div className="container">
