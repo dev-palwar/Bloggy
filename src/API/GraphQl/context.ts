@@ -7,6 +7,7 @@ export const hello = gql`
   }
 `;
 
+// This is the middleware
 export const context = () => {
   const token = localStorage.getItem("auth_token");
   return {
