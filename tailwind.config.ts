@@ -1,4 +1,5 @@
-import type { Config } from 'tailwindcss'
+// tailwind.config.js
+import type { Config } from 'tailwindcss';
 
 const config: Config = {
   content: [
@@ -16,5 +17,13 @@ const config: Config = {
     },
   },
   plugins: [],
-}
-export default config
+  purge: {
+    content: [
+      './src/pages/**/*.{js,ts,jsx,tsx}',
+      './src/components/**/*.{js,ts,jsx,tsx}',
+      './src/app/**/*.{js,ts,jsx,tsx}',
+    ],
+  },
+};
+
+export default config;
