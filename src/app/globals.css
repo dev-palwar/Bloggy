@@ -12,7 +12,7 @@ img{
     border-radius: 5px;
 }
 
-/* .card{
+.card{
     display: flex;
     height: 15rem;
     width: 40rem;
@@ -23,4 +23,7 @@ img{
 .card .avatar{
     height: 35px;
     width: 35px;
-} */
+}
+.card .blog-title{
+    font-size: 25px;
+}

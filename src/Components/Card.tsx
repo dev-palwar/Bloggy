@@ -6,10 +6,10 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 
 const Blog = (params: Blog) => {
   return (
-    <div className="card flex h-[15rem] w-[40rem] mt-5 p-[10px] flex-col gap-[10px] overflow-hidden">
+    <div className="card flex mt-5 flex-col overflow-hidden">
       <div className="flex justify-between items-center">
-        <div className="flex items-center gap-[10px]">
-          <div className="avatar h-[35px] w-[35px]">
+        <div className="flex items-center gap-3">
+          <div className="avatar">
             <Link href={`/profile/${params.author.id}`}>
               <Image
                 src={params.author.avatar ?? ""}
@@ -22,10 +22,10 @@ const Blog = (params: Blog) => {
           </div>
           <h1>{params.author.name}</h1>
           <p className="opacity-70">{formateDate(params.createdAt)}</p>
-          <div className="ml-[10px] flex gap-2">
+          <div className="ml-3 flex gap-2">
             {params.category.map((cat, index) => {
               return (
-                <p key={index} className="text-blue-300">
+                <p key={index} style={{ color: "blue" }}>
                   {cat}
                 </p>
               );
@@ -37,10 +37,10 @@ const Blog = (params: Blog) => {
           <p>{params.upvotes?.length}</p>
         </div>
       </div>
-      <div className="content flex justify-between gap-[25px]">
+      <div className="content flex justify-between gap-6">
         <div className="flex flex-col gap-2">
           <Link href={`/Blogs/${params.id}`}>
-            <h1 className="text-[25px] font-bold">{params.title}</h1>
+            <h1 className="blog-title font-bold">{params.title}</h1>
           </Link>
           <p
             className="opacity-70"

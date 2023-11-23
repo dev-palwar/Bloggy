@@ -1,7 +1,5 @@
 // next.config.js
 module.exports = {
-  optimizeCss: false,
-  enableBabelRuntime: true,
   images: {
     domains: [
       "images.unsplash.com",
