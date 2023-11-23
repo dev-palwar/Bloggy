@@ -16,14 +16,11 @@ import Link from "next/link";
 import { logout } from "@/lib/logout";
 import EditIcon from "@mui/icons-material/Edit";
 import { getLoggedInUser } from "@/lib/user";
-import { useRouter } from "next/navigation";
 
 const pages = ["Products", "Pricing", "Blog"];
 const settings = ["Profile", "Logout"];
 
 export default function ResponsiveAppBar() {
-  const router = useRouter();
-  
   const [user, setUser] = React.useState<LoggedInUser>({
     avatar: "",
     userId: "",
@@ -69,7 +66,7 @@ export default function ResponsiveAppBar() {
   const handleCloseUserMenu = () => setAnchorElUser(null);
 
   return (
-    <Container className="sticky top-0 max-w-[81vw] bg-white z-10">
+    <Container className="navbar max-w-[81vw] z-10">
       <Toolbar disableGutters>
         <Link href={"/"}>
           <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />

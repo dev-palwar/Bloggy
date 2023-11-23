@@ -27,3 +27,9 @@ img{
 .card .blog-title{
     font-size: 25px;
 }
+
+.navbar{
+    position: sticky;
+    top: 0;
+    background-color: white;
+}
