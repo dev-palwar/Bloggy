@@ -43,7 +43,7 @@ const Blog = (params: Blog) => {
             <h1 className="blog-title font-bold">{params.title}</h1>
           </Link>
           <p
-            className="opacity-70"
+            style={{opacity: 0.8}}
             dangerouslySetInnerHTML={{
               __html: truncateText(params.description, 25),
             }}
@@ -54,7 +54,7 @@ const Blog = (params: Blog) => {
           height={100}
           width={200}
           alt="poster"
-          className="h-fit"
+          style={{height: "fit-content"}}
         />
       </div>
     </div>

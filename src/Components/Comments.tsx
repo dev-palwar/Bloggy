@@ -12,7 +12,6 @@ import { getLoggedInUser } from "@/lib/user";
 import { formateDate } from "@/lib/App";
 import Image from "next/image";
 import BasicModal from "./Modale";
-import { error } from "console";
 
 interface CommentComponentParams {
   commentsArr: Comments[] | undefined;
@@ -51,7 +50,7 @@ export const CommentComponent = (params: CommentComponentParams) => {
     <>
       <div className="comment-section border mt-[1rem] p-[1rem] mb-[1rem]">
         <ToastContainer />
-        <h1 className="text-[2rem] font-bold mb-[1rem]">Comments</h1>
+        <h1 className="font-bold mb-[1rem]" style={{fontSize: '2rem'}}>Comments</h1>
         <div className="flex justify-between">
           <form onSubmit={postComment}>
             <input
@@ -97,8 +96,8 @@ const Comments = ({ commentObj }: { commentObj: Comments }) => {
         <BasicModal click={true}>{deleteCommentState.error.message}</BasicModal>
       )}
       <div className="comment p-[1rem]">
-        <div className="author-info flex items-center justify-between mb-[10px]">
-          <div className="flex gap-[10px] items-center">
+        <div className="author-info flex items-center justify-between mb-3">
+          <div className="flex gap-3 items-center">
             <Link href={`/profile/${commentObj.author.id}`}>
               <div className="h-[35px] w-[35px]">
                 <Image
@@ -111,7 +110,7 @@ const Comments = ({ commentObj }: { commentObj: Comments }) => {
               </div>
             </Link>
             <p>{commentObj.author.name}</p>
-            <p className="opacity-50 text-[15px]">
+            <p className="text-[15px]" style={{opacity: '0.5'}}>
               {formateDate(commentObj.createdAt.toString())}
             </p>
           </div>
