@@ -76,7 +76,8 @@ export default function Page() {
       setLoading(false);
       toast.success("Blog added");
       setTimeout(() => {
-        router.push(`Blogs/${data.ID}`);
+        // Ensure that router is defined before using it
+        router?.push(`Blogs/${data.ID}`);
       }, 400);
     }
     if (error) {
