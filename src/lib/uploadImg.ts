@@ -1,5 +1,5 @@
 import { imageDb } from "../API/Firebase/config";
-import { getDownloadURL, listAll, ref, uploadBytes } from "firebase/storage";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { v4 } from "uuid";
 
 export const uploadImg = async (file: File, folder: string): Promise<string> => {

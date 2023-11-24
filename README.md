@@ -1,36 +1,65 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Bloggy 📌
 
-## Getting Started
+Bloggy is a clean and minimalistic UI for a sophisticated Blogging application, designed to seamlessly collaborate with its corresponding [Backend](https://github.com/dev-palwar/Blogging-application-backend). Its primary objective is to showcase the seamless integration and operational capabilities of the various APIs provided by the backend.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **User Interface:**
+  - Secure user authentication for managing blogs and engaging with the community.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Blog Management:**
+  - Effortlessly write, edit, and publish your blogs.
+  - User-friendly interface for managing your published blogs.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Community Interaction:**
+  - Comment on blogs to foster discussions.
+  - Follow other users and see what they are doing.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- **Discover and Explore:**
+  - Explore blogs from various users with a user-friendly navigation system.
 
-## Learn More
+## Tech Stack
 
-To learn more about Next.js, take a look at the following resources:
+- **Next.js:**
+  - A React framework for building server-rendered React applications.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Apollo Client (for GraphQL):**
+  - Handles data fetching and state management for seamless integration with GraphQL.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- **TypeScript:**
+  - Adds static typing to the JavaScript language, enhancing code quality and developer experience.
 
-## Deploy on Vercel
+- **Tailwind CSS:**
+  - A utility-first CSS framework for designing a responsive and clean UI.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Local Setup
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+   **Clone the repository:**
+
+     git@github.com:dev-palwar/Blogging-application-frontend.git
+     cd Blogging-application-frontend
+
+   **Install dependencies:**
+
+      npm install
+
+   **Configure environment variables**
+
+  - Create a .env file based on .env.example and follow the instructions written there
+
+   **Run the application:**
+
+      npm run dev
+
+## Contributing
+
+Contributions are welcome! If you'd like to contribute to this project, please follow these steps:
+
+_Fork the repository  
+_Create a new branch for your feature or bug fix   
+_Make your changes and commit them   
+_Push to your branch    
+_Create pull request  
+
+> If you have any other questions or need further assistance, feel free to reach out to me on Twitter [@dev_palwar2](https://twitter.com/dev_palwar2).
+
