@@ -32,10 +32,6 @@ const Blog = (params: Blog) => {
             })}
           </div>
         </div>
-        <div className="flex gap-1">
-          <FavoriteIcon className="text-red-600" />
-          <p>{params.upvotes?.length}</p>
-        </div>
       </div>
       <div className="content flex justify-between gap-6">
         <div className="flex flex-col gap-2">
