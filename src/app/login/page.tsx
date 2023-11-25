@@ -171,7 +171,7 @@ const TestUser = () => {
       <div className="mt-3">
         Email: test@mail
         <br />
-        password: test@123
+        password: test123
       </div>
     </div>
   );
