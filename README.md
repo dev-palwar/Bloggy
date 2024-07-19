@@ -2,6 +2,12 @@
 
 Bloggy is a clean and minimalistic UI for a sophisticated Blogging application, designed to seamlessly collaborate with its corresponding [Backend](https://github.com/dev-palwar/Blogging-application-backend). Its primary objective is to showcase the seamless integration and operational capabilities of the various APIs provided by the backend.
 
+
+
+https://github.com/user-attachments/assets/e7c60aa3-b767-47f5-b73b-a27d962acfd5
+
+
+
 ## Local Setup
 
    **Clone the repository:**
