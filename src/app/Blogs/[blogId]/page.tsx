@@ -84,7 +84,7 @@ export default function Page({ params }: IDS) {
           <LinearProgress />
         </div>
       ) : (
-        <div className="container">
+        <div>
           {error ? (
             <BasicModal click={true}>
               <Error message={"This blog was deleted"} />

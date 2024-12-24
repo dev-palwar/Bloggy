@@ -50,7 +50,7 @@ export const CommentComponent = (params: CommentComponentParams) => {
     <>
       <div className="comment-section border mt-[1rem] p-[1rem] mb-[1rem]">
         <ToastContainer />
-        <h1 className="font-bold mb-[1rem]" style={{fontSize: '2rem'}}>Comments</h1>
+        <h1 className="font-bold mb-[1rem] text-[2rem]">Comments</h1>
         <div className="flex justify-between">
           <form onSubmit={postComment}>
             <input
@@ -110,7 +110,7 @@ const Comments = ({ commentObj }: { commentObj: Comments }) => {
               </div>
             </Link>
             <p>{commentObj.author.name}</p>
-            <p className="text-[15px]" style={{opacity: '0.5'}}>
+            <p className="text-[15px] opacity-50">
               {formateDate(commentObj.createdAt.toString())}
             </p>
           </div>

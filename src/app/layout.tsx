@@ -25,7 +25,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <ApolloProvider client={client}>
           {pathname !== "/login" && <Header />}
-          {children}
+          <div className="mb-4 mt-20 m-auto max-w-[1180px]">{children}</div>
         </ApolloProvider>
       </body>
     </html>

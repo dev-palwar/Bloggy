@@ -10,6 +10,7 @@ module.exports = {
       "devpalwar.vercel.app",
       "pbs.twimg.com",
       "s8d6.turboimg.net",
+      "source.unsplash.com",
     ],
   },
 };

@@ -9,13 +9,22 @@ import React, {
   useEffect,
 } from "react";
 import { useMutation } from "@apollo/client";
-import { Button, LinearProgress } from "@mui/material";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Editor from "@/Components/Editor";
 import "react-quill/dist/quill.snow.css";
 import { uploadImg } from "@/lib/uploadImg";
 import { useRouter } from "next/navigation";
+import { Button } from "@/component/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/component/ui/dropdown-menu";
+
+import loaderGif from "../../assests/loaderGif.gif";
+import Image from "next/image";
 
 const categories = [
   "PROGRAMMING",
@@ -38,8 +47,7 @@ export default function Page() {
 
   const [blogPayload, { data, error }] = useMutation(addBlog, context());
 
-  const handleCategoryChange = (e: ChangeEvent<HTMLSelectElement>) =>
-    setSelectedCategory(e.target.value);
+  const handleCategoryChange = (cat: string) => setSelectedCategory(cat);
 
   const handleContentChange = (content: string) => setEditorContent(content);
 
@@ -91,9 +99,19 @@ export default function Page() {
   return (
     <div className="container">
       <ToastContainer />
-      {loading && <LinearProgress />}
+      {loading && (
+        <div className="w-[15rem] h-[11rem] m-auto">
+          <Image
+            src={loaderGif}
+            height={100}
+            width={100}
+            alt="loading"
+            className="h-[100%] w-[100%] object-cover"
+          />
+        </div>
+      )}
       <form
-        className="flex mb-[1rem] flex-col"
+        className="flex flex-col gap-2"
         ref={formRef}
         onSubmit={handleSubmit}
       >
@@ -104,29 +122,34 @@ export default function Page() {
           placeholder="Write your heading here..."
           contentEditable={true}
         />
-        <input type="file" onChange={(ev) => setFiles(ev.target.files)} />
-        <select
-          required
-          value={selectedCategory}
-          onChange={handleCategoryChange}
-          className="mb-4 bg-transparent mt-[1rem]"
-        >
-          <option value="">Select a category</option>
-          {categories.map((category, index) => (
-            <option key={index} value={category}>
-              {category}
-            </option>
-          ))}
-        </select>
-        <Editor value={editorContent} onChange={handleContentChange} />
-        <Button
-          type="submit"
-          variant="contained"
-          color="success"
-          className="p-[1rem] rounded-xl mt-[1rem]"
-        >
-          Post
-        </Button>
+        <div className="flex gap-9 items-center">
+          <input
+            type="file"
+            onChange={(ev) => setFiles(ev.target.files)}
+            className="block text-sm text-gray-500 file:py-2 file:px-4 file:rounded-md file:bg-gray-200 file:text-gray-700"
+          />
+          <DropdownMenu>
+            <DropdownMenuTrigger className="mb-4 bg-transparent mt-[1rem]">
+              {selectedCategory || "Select a category"}
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-[200px]">
+              {categories.map((category, index) => (
+                <DropdownMenuItem
+                  key={index}
+                  onClick={() => handleCategoryChange(category)}
+                >
+                  {category}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+        <div className="flex flex-col gap-4">
+          <Editor value={editorContent} onChange={handleContentChange} />
+          <Button type="submit" variant="default">
+            Post
+          </Button>
+        </div>
       </form>
     </div>
   );

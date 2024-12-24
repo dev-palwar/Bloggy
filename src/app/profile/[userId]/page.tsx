@@ -2,14 +2,14 @@
 import React from "react";
 import { context, variables } from "@/API/GraphQl/context";
 import { followUnfollowQuery, getProfile } from "@/API/GraphQl/user";
-import Blog from "@/Components/Card";
 import { useMutation, useQuery } from "@apollo/client";
-import { Button } from "@mui/material";
-import LinearProgress from "@mui/material/LinearProgress";
 import Link from "next/link";
 import { getLoggedInUser } from "@/lib/user";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { BlogHorizontal } from "@/Components/HorizontalCard";
+import loaderGif from "../../../assests/loaderGif.gif";
+import { Button } from "@/component/ui/button";
 
 export default function Page({ params }: IDS) {
   const router = useRouter();
@@ -58,27 +58,25 @@ export default function Page({ params }: IDS) {
   return (
     <>
       {loading ? (
-        <div className="container">
-          <LinearProgress />
+        <div>
+          {/* <LinearProgress /> */}
+          <div className="w-[15rem] h-[11rem] m-auto">
+            <Image
+              src={loaderGif}
+              height={100}
+              width={100}
+              alt="loading"
+              className="h-[100%] w-[100%] object-cover"
+            />
+          </div>
         </div>
       ) : (
-        <div className="container">
+        <div>
           <div className="home-section flex justify-evenly">
             <div className="Blog-section flex flex-col">
-              <h1 className="text-[3rem]">{userData?.name}</h1>
               <div>
-                {userData?.blogs?.map((value: Blog) => (
-                  <Blog
-                    key={value.id}
-                    id={value.id}
-                    title={value.title}
-                    description={value.description}
-                    poster={value.poster}
-                    author={value.author}
-                    createdAt={value.createdAt}
-                    upvotes={value.upvotes}
-                    category={value.category}
-                  />
+                {userData?.blogs?.map((value: Blog, key: number) => (
+                  <BlogHorizontal {...value} key={key} />
                 ))}
               </div>
             </div>
@@ -102,14 +100,18 @@ export default function Page({ params }: IDS) {
                   {loggedInUser?.userId != params.userId && (
                     <>
                       <Button
-                        variant="contained"
+                        variant="default"
                         color="success"
                         onClick={() => handleFollow(userData?.id ?? "")}
                       >
-                        {ifFollows ? "following" : "Follow"}
+                        {followStatus.loading
+                          ? "..."
+                          : ifFollows
+                          ? "FOLLOWING"
+                          : "FOLLOW"}
                       </Button>
-                      <Button variant="outlined" color="success">
-                        Connect
+                      <Button variant="ghost" color="success">
+                        CONNECT
                       </Button>
                     </>
                   )}
@@ -143,7 +145,10 @@ export default function Page({ params }: IDS) {
                 <h1 className="font-bold pb-[10px] border-b-2">Followers</h1>
                 {userData?.followers?.map((user: User) => {
                   return (
-                    <div key={user.id} className="flex opacity-80 text-[15px] items-center gap-3 ">
+                    <div
+                      key={user.id}
+                      className="flex opacity-80 text-[15px] items-center gap-3 "
+                    >
                       <Link href={`/profile/${user.id}`}>
                         <Image
                           height={100}

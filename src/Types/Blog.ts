@@ -7,7 +7,7 @@ interface Blog {
   author: User;
   category: Category[];
   upvotes?: Author[];
-  comments?: Comments[]
+  comments?: Comments[];
 }
 
 enum Category {
