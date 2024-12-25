@@ -4,7 +4,11 @@ Bloggy is a clean and minimalistic UI for a sophisticated Blogging application, 
 
 
 
-https://github.com/user-attachments/assets/e7c60aa3-b767-47f5-b73b-a27d962acfd5
+
+
+https://github.com/user-attachments/assets/517cbf6e-55c1-40b7-9147-fdc2ddb2bf87
+
+
 
 
 
