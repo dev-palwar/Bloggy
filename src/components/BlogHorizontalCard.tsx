@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-export const BlogHorizontal = (params: Blog) => {
+export const BlogHorizontalCard = (params: Blog) => {
   return (
     <div className="max-w-xl p-2 gap-3 flex flex-col overflow-hidden mt-auto">
       <div className="flex justify-between items-center">

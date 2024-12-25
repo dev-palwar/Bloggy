@@ -7,9 +7,9 @@ import Link from "next/link";
 import { getLoggedInUser } from "@/lib/user";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { BlogHorizontal } from "@/Components/HorizontalCard";
-import loaderGif from "../../../assests/loaderGif.gif";
-import { Button } from "@/component/ui/button";
+import { BlogHorizontalCard } from "@/components/BlogHorizontalCard";
+import { Button } from "@/components/ui/button";
+import { Loader } from "@/components/Loader";
 
 export default function Page({ params }: IDS) {
   const router = useRouter();
@@ -58,25 +58,14 @@ export default function Page({ params }: IDS) {
   return (
     <>
       {loading ? (
-        <div>
-          {/* <LinearProgress /> */}
-          <div className="w-[15rem] h-[11rem] m-auto">
-            <Image
-              src={loaderGif}
-              height={100}
-              width={100}
-              alt="loading"
-              className="h-[100%] w-[100%] object-cover"
-            />
-          </div>
-        </div>
+        <Loader />
       ) : (
         <div>
           <div className="home-section flex justify-evenly">
             <div className="Blog-section flex flex-col">
               <div>
                 {userData?.blogs?.map((value: Blog, key: number) => (
-                  <BlogHorizontal {...value} key={key} />
+                  <BlogHorizontalCard {...value} key={key} />
                 ))}
               </div>
             </div>

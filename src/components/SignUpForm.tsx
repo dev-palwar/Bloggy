@@ -1,16 +1,16 @@
 import React from "react";
 import { signUpQuery } from "@/API/GraphQl/user";
 import { useMutation } from "@apollo/client";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { uploadImg } from "@/lib/uploadImg";
-import { Input } from "@/component/ui/input";
-import { Button } from "@/component/ui/button";
-import { Textarea } from "@/component/ui/textarea";
-import { Label } from "@/component/ui/label";
-import { Avatar, AvatarImage, AvatarFallback } from "@/component/ui/avatar";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { useToast } from "@/hooks/use-toast";
 
-export default function SignUp() {
+export default function SignUpForm() {
+  const { toast } = useToast();
   const formRef = React.useRef<HTMLFormElement | null>(null);
   const [loading, setLoading] = React.useState<boolean>(false);
   const [userImage, setUserImage] = React.useState<File | null>(null);
@@ -42,7 +42,10 @@ export default function SignUp() {
       try {
         userImageUrl = await uploadImg(userImage, "users");
       } catch (error) {
-        toast.error("Error while uploading image");
+        toast({
+          description: "Error while uploading image",
+          variant: "destructive",
+        });
         return;
       }
     } else {
@@ -50,7 +53,10 @@ export default function SignUp() {
     }
 
     if (!email || !password || !name || !bio || !nationality) {
-      toast.error("Please fill in all required fields.");
+      toast({
+        description: "Please fill in all required fields.",
+        variant: "destructive",
+      });
       return;
     }
 
@@ -70,7 +76,10 @@ export default function SignUp() {
         },
       });
     } catch (error) {
-      toast.error("Error while creating account");
+      toast({
+        description: "Error while creating account.",
+        variant: "destructive",
+      });
     } finally {
       setLoading(false);
     }
@@ -79,7 +88,9 @@ export default function SignUp() {
   React.useEffect(() => {
     if (data && !toastDisplayed) {
       setToastDisplayed(true);
-      toast.success("Account created successfully! You can log in now.");
+      toast({
+        description: "Account created successfully! You can log in now. 👍",
+      });
       if (formRef.current) {
         formRef.current.reset();
       }
@@ -87,13 +98,12 @@ export default function SignUp() {
       setDp(undefined);
     }
     if (error) {
-      toast.error(error.message);
+      toast({ description: error.message });
     }
-  }, [data, error, toastDisplayed]);
+  }, [data, error, toast, toastDisplayed]);
 
   return (
     <div className="flex flex-col items-center justify-center ">
-      <ToastContainer />
       <form
         ref={formRef}
         className=" p-8 rounded-lg w-full max-w-md"

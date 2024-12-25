@@ -5,14 +5,14 @@ import { formateDate } from "@/lib/App";
 import { useMutation, useQuery } from "@apollo/client";
 import { context, variables } from "@/API/GraphQl/context";
 import Link from "next/link";
-import Error from "@/Components/Error";
-import BasicModal from "@/Components/Modale";
+import Error from "@/components/Error";
+import BasicModal from "@/components/Modale";
 import { getLoggedInUser } from "@/lib/user";
 import { useRouter } from "next/navigation";
-import { CommentComponent } from "@/Components/Comments";
-import Image from "next/image";
-import loaderGif from "../../../assests/loaderGif.gif";
+import { CommentComponent } from "@/components/Comments";
 import { EraserIcon, HeartIcon } from "lucide-react";
+import { Loader } from "@/components/Loader";
+import Image from "next/image";
 
 export default function Page({ params }: IDS) {
   const router = useRouter();
@@ -79,15 +79,7 @@ export default function Page({ params }: IDS) {
   return (
     <>
       {loading || deleteState.loading ? (
-        <div className="w-[15rem] h-[11rem] m-auto">
-          <Image
-            src={loaderGif}
-            height={100}
-            width={100}
-            alt="loading"
-            className="h-[100%] w-[100%] object-cover"
-          />
-        </div>
+        <Loader />
       ) : (
         <div>
           {error ? (

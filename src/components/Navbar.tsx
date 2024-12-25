@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Button } from "@/component/ui/button";
+import { Button } from "@/components/ui/button";
 import { PenSquare, LogIn, BookOpen, User, LogOut } from "lucide-react";
 import { getLoggedInUser } from "@/lib/user";
 import React from "react";
@@ -10,7 +10,7 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/component/ui/dropdown-menu";
+} from "@/components/ui/dropdown-menu";
 import { generateCoolName } from "@/lib/uploadImg";
 
 export function Header() {

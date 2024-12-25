@@ -6,7 +6,8 @@ const inter = Roboto({ subsets: ["latin"], weight: ["400", "700"] });
 import { ApolloProvider } from "@apollo/client";
 import client from "@/API/Apollo/config";
 import { usePathname } from "next/navigation";
-import { Header } from "@/Components/Navbar";
+import { Header } from "@/components/Navbar";
+import { Toaster } from "@/components/ui/toaster";
 
 // export const metadata: Metadata = {
 //   title: "Bloggy",
@@ -32,6 +33,7 @@ export default function RootLayout({
           >
             {children}
           </div>
+          <Toaster />
         </ApolloProvider>
       </body>
     </html>

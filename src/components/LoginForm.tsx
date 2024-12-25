@@ -5,12 +5,13 @@ import { setLoggedInUser } from "@/lib/user";
 import { useMutation } from "@apollo/client";
 import { useRouter } from "next/navigation";
 import React, { useCallback, useState } from "react";
-import { toast } from "react-toastify";
 import BasicModal from "./Modale";
-import SignUp from "./SignUp";
-import { Button } from "@/component/ui/button";
+import SignUpForm from "./SignUpForm";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
 
 export default function LoginForm() {
+  const { toast } = useToast();
   const [signUp, setSignUp] = React.useState<Boolean>(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -24,7 +25,10 @@ export default function LoginForm() {
       e.preventDefault();
 
       if (!email || !password) {
-        toast.error("Please fill in all required fields.");
+        toast({
+          description: "Please fill in all required fields.",
+          variant: "destructive",
+        });
         return;
       }
 
@@ -46,16 +50,18 @@ export default function LoginForm() {
         }
       } catch (err) {
         // Handle unexpected errors
-        console.error(err);
-        toast.error("Something went wrong. Please try again.");
+        toast({
+          description: "Something went wrong. Please try again.",
+          variant: "destructive",
+        });
       }
     },
-    [email, password, loginPayload, router]
+    [email, password, toast, loginPayload, router]
   );
 
   React.useEffect(() => {
-    if (error) toast.error(error.message);
-  }, [handleSubmit, error]);
+    if (error) toast({ description: error.message, variant: "destructive" });
+  }, [handleSubmit, error, toast]);
 
   return (
     <div className=" rounded-lg p-8 space-y-6">
@@ -106,7 +112,7 @@ export default function LoginForm() {
       <div>
         {signUp && (
           <BasicModal click={true}>
-            <SignUp />
+            <SignUpForm />
           </BasicModal>
         )}
       </div>

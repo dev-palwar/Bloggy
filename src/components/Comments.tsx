@@ -3,20 +3,21 @@ import { context, variables } from "@/API/GraphQl/context";
 import { useMutation } from "@apollo/client";
 import Link from "next/link";
 import React from "react";
-import { usePathname } from "next/navigation";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { usePathname, useRouter } from "next/navigation";
 import { getLoggedInUser } from "@/lib/user";
 import { formateDate } from "@/lib/App";
 import Image from "next/image";
 import BasicModal from "./Modale";
 import { EraserIcon, SendIcon } from "lucide-react";
+import { toast, useToast } from "@/hooks/use-toast";
 
 interface CommentComponentParams {
   commentsArr: Comments[] | undefined;
 }
 
 export const CommentComponent = (params: CommentComponentParams) => {
+  const router = useRouter();
+  const { toast } = useToast();
   const pathname = usePathname();
   const blogId = pathname.substring(pathname.lastIndexOf("/") + 1);
 
@@ -30,23 +31,33 @@ export const CommentComponent = (params: CommentComponentParams) => {
     const comment = commentRef.current?.value;
 
     if (comment) {
-      commentPayload({
-        variables: {
-          input: { blogId, comment },
-        },
-      });
+      if (getLoggedInUser()) {
+        commentPayload({
+          variables: {
+            input: { blogId, comment },
+          },
+        });
 
-      if (commentRef.current) commentRef.current.value = "";
-      toast.success("Comment added");
+        if (commentRef.current) commentRef.current.value = "";
+        toast({
+          description: "Comment Added 👍",
+        });
+      } else {
+        router.push("/login");
+        toast({
+          description: "You need to log in sir",
+        });
+      }
     } else {
-      console.log("Comment cannot be empty");
+      toast({
+        description: "Comment cannot be empty 🚫",
+      });
     }
   };
 
   return (
     <>
       <div className="comment-section border mt-[1rem] p-[1rem] mb-[1rem]">
-        <ToastContainer />
         <h1 className="font-bold mb-[1rem] text-[2rem]">Comments</h1>
         <div className="flex justify-between">
           <form onSubmit={postComment}>
@@ -84,7 +95,7 @@ const Comments = ({ commentObj }: { commentObj: Comments }) => {
   };
 
   React.useEffect(() => {
-    if (deleteCommentState.data) toast.success("Comment deleted 👍");
+    if (deleteCommentState.data) toast({ description: "Comment deleted 👍" });
   }, [deleteCommentState.data]);
 
   return (

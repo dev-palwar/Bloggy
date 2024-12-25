@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Dialog, DialogContent, DialogOverlay } from "@/component/ui/dialog";
+import { Dialog, DialogContent, DialogOverlay } from "@/components/ui/dialog";
 
 interface BasicModalProps {
   children: React.ReactNode;

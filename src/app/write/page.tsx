@@ -1,30 +1,23 @@
 "use client";
 import { addBlog } from "@/API/GraphQl/blog";
 import { context } from "@/API/GraphQl/context";
-import React, {
-  useState,
-  useRef,
-  ChangeEvent,
-  FormEvent,
-  useEffect,
-} from "react";
+import React, { useState, useRef, FormEvent, useEffect } from "react";
 import { useMutation } from "@apollo/client";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import Editor from "@/Components/Editor";
+import Editor from "@/components/Editor";
 import "react-quill/dist/quill.snow.css";
 import { uploadImg } from "@/lib/uploadImg";
 import { useRouter } from "next/navigation";
-import { Button } from "@/component/ui/button";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/component/ui/dropdown-menu";
+} from "@/components/ui/dropdown-menu";
 
-import loaderGif from "../../assests/loaderGif.gif";
-import Image from "next/image";
+import { Loader } from "@/components/Loader";
+import { toast } from "@/hooks/use-toast";
+import { getLoggedInUser } from "@/lib/user";
 
 const categories = [
   "PROGRAMMING",
@@ -60,21 +53,31 @@ export default function Page() {
     try {
       setLoading(true);
 
-      const imgUrl = await uploadImg(files[0], "files");
+      if (getLoggedInUser()) {
+        const imgUrl = await uploadImg(files[0], "files");
 
-      blogPayload({
-        variables: {
-          input: {
-            title: formData.get("title") as string,
-            description: editorContent,
-            category: selectedCategory,
-            poster: imgUrl,
+        blogPayload({
+          variables: {
+            input: {
+              title: formData.get("title") as string,
+              description: editorContent,
+              category: selectedCategory,
+              poster: imgUrl,
+            },
           },
-        },
-      });
+        });
+      } else {
+        toast({
+          description: "You need to log in sir",
+        });
+        router.push("/login");
+      }
     } catch (error) {
       setLoading(false);
-      toast.error("Error submitting the form");
+      toast({
+        description: "Error submitting the form",
+        variant: "destructive",
+      });
     }
   };
 
@@ -82,34 +85,26 @@ export default function Page() {
   useEffect(() => {
     if (data) {
       setLoading(false);
-      toast.success("Blog added");
+      toast({ description: "Blog added. 👍" });
       setTimeout(() => {
-        // Ensure that router is defined before using it
+        // Ensures that router is defined before using it
+        // show the user their newly uploaded blog after a second
         router?.push(`Blogs/${data.ID}`);
-      }, 400);
+      }, 1000);
     }
     if (error) {
       setLoading(false);
-      toast.error(
-        "Failed to upload blog. Make sure all the details are filled in"
-      );
+
+      toast({
+        description:
+          "Failed to upload blog. Make sure all the details are filled in",
+        variant: "destructive",
+      });
     }
   }, [data, error, router]);
 
   return (
     <div className="container">
-      <ToastContainer />
-      {loading && (
-        <div className="w-[15rem] h-[11rem] m-auto">
-          <Image
-            src={loaderGif}
-            height={100}
-            width={100}
-            alt="loading"
-            className="h-[100%] w-[100%] object-cover"
-          />
-        </div>
-      )}
       <form
         className="flex flex-col gap-2"
         ref={formRef}
