@@ -2,7 +2,6 @@ import { formateDate, truncateText } from "@/lib/App";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import FavoriteIcon from "@mui/icons-material/Favorite";
 
 export const BlogHorizontal = (params: Blog) => {
   return (

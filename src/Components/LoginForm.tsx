@@ -6,16 +6,18 @@ import { useMutation } from "@apollo/client";
 import { useRouter } from "next/navigation";
 import React, { useCallback, useState } from "react";
 import { toast } from "react-toastify";
+import BasicModal from "./Modale";
+import SignUp from "./SignUp";
+import { Button } from "@/component/ui/button";
 
 export default function LoginForm() {
+  const [signUp, setSignUp] = React.useState<Boolean>(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const router = useRouter();
 
   const [loginPayload, { loading, error, data }] = useMutation(Login);
-
-  console.log(data);
 
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
@@ -57,6 +59,9 @@ export default function LoginForm() {
 
   return (
     <div className=" rounded-lg p-8 space-y-6">
+      <BasicModal click={true}>
+        <TestUser />
+      </BasicModal>
       <h2 className="text-3xl font-light text-center text-gray-800">Sign In</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
@@ -90,13 +95,35 @@ export default function LoginForm() {
       </form>
       <p className="text-center text-sm text-gray-600">
         New here?{" "}
-        <a
-          href="#"
+        <Button
+          onClick={() => setSignUp(!signUp)}
+          variant={"link"}
           className="text-blue-700 font-medium hover:underline pb-2 hover:text-gray-700 transition duration-300"
         >
           Make an account
-        </a>
+        </Button>
       </p>
+      <div>
+        {signUp && (
+          <BasicModal click={true}>
+            <SignUp />
+          </BasicModal>
+        )}
+      </div>
     </div>
   );
 }
+
+const TestUser = () => {
+  return (
+    <div className="">
+      Email and password for the test user
+      <br />
+      <div className="mt-3">
+        Email: test@mail
+        <br />
+        password: test123
+      </div>
+    </div>
+  );
+};

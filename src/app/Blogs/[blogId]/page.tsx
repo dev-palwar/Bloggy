@@ -3,17 +3,16 @@ import React from "react";
 import { deleteBlogQuery, getBlog, upvotingBlog } from "@/API/GraphQl/blog";
 import { formateDate } from "@/lib/App";
 import { useMutation, useQuery } from "@apollo/client";
-import { LinearProgress } from "@mui/material";
-import FavoriteIcon from "@mui/icons-material/Favorite";
 import { context, variables } from "@/API/GraphQl/context";
 import Link from "next/link";
 import Error from "@/Components/Error";
 import BasicModal from "@/Components/Modale";
-import DeleteIcon from "@mui/icons-material/Delete";
 import { getLoggedInUser } from "@/lib/user";
 import { useRouter } from "next/navigation";
 import { CommentComponent } from "@/Components/Comments";
 import Image from "next/image";
+import loaderGif from "../../../assests/loaderGif.gif";
+import { EraserIcon, HeartIcon } from "lucide-react";
 
 export default function Page({ params }: IDS) {
   const router = useRouter();
@@ -80,8 +79,14 @@ export default function Page({ params }: IDS) {
   return (
     <>
       {loading || deleteState.loading ? (
-        <div className="container">
-          <LinearProgress />
+        <div className="w-[15rem] h-[11rem] m-auto">
+          <Image
+            src={loaderGif}
+            height={100}
+            width={100}
+            alt="loading"
+            className="h-[100%] w-[100%] object-cover"
+          />
         </div>
       ) : (
         <div>
@@ -105,24 +110,26 @@ export default function Page({ params }: IDS) {
                       />
                     </Link>
                   </div>
-                  <p className="font-bold text-[23px]">
-                    {blogData?.author?.name}
-                  </p>
-                  <p className="">{formateDate(blogData?.createdAt ?? "")}</p>
-                  {blogData?.category.map((cat: Category, index: number) => (
-                    <p key={index} className="text-yellow-500 ml-[1rem]">
-                      {cat}
+                  <div className="flex justify-center items-center gap-4">
+                    <p className="font-bold text-[23px]">
+                      {blogData?.author?.name}
                     </p>
-                  ))}
+                    <p className="">{formateDate(blogData?.createdAt ?? "")}</p>
+                    {blogData?.category.map((cat: Category, index: number) => (
+                      <p key={index} className="text-blue-500 ml-[1rem]">
+                        {cat}
+                      </p>
+                    ))}
+                  </div>
                 </div>
                 <div className="flex items-center gap-1">
                   {upvoteState.loading ? (
                     ""
                   ) : (
                     <div onClick={handleUpvote}>
-                      <FavoriteIcon
+                      <HeartIcon
                         className={`cursor-pointer ${
-                          ifLiked ? "text-red-500" : ""
+                          ifLiked ? "text-red-500" : "text-blue-500"
                         }`}
                       />
                     </div>
@@ -133,7 +140,7 @@ export default function Page({ params }: IDS) {
                       onClick={handleDeleteAction}
                       className="ml-[1rem] cursor-pointer"
                     >
-                      <DeleteIcon />
+                      <EraserIcon />
                     </div>
                   )}
                 </div>

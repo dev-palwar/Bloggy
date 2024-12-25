@@ -1,18 +1,5 @@
-import * as React from "react";
-import Box from "@mui/material/Box";
-import Modal from "@mui/material/Modal";
-
-const style = {
-  position: "absolute" as "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-};
+import React, { useEffect, useState } from "react";
+import { Dialog, DialogContent, DialogOverlay } from "@/component/ui/dialog";
 
 interface BasicModalProps {
   children: React.ReactNode;
@@ -20,25 +7,20 @@ interface BasicModalProps {
 }
 
 export default function BasicModal({ children, click }: BasicModalProps) {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-
-  React.useEffect(() => {
-    if (click) handleOpen();
+  useEffect(() => {
+    if (click) setOpen(true);
   }, [click]);
 
+  const handleClose = () => setOpen(false);
+
   return (
-    <div>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>{children}</Box>
-      </Modal>
-    </div>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogOverlay onClick={handleClose} />
+      <DialogContent className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg p-6 shadow-md">
+        {children}
+      </DialogContent>
+    </Dialog>
   );
 }

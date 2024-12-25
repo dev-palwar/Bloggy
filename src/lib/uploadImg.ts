@@ -52,6 +52,3 @@ export function generateCoolName(): string {
 
   return `${randomAdjective} ${randomNoun}`;
 }
-
-// Example usage
-console.log(generateCoolName());

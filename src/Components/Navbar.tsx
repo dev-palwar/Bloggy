@@ -1,13 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/component/ui/button";
-import {
-  PenSquare,
-  LogIn,
-  BookOpen,
-  User,
-  Settings,
-  LogOut,
-} from "lucide-react";
+import { PenSquare, LogIn, BookOpen, User, LogOut } from "lucide-react";
 import { getLoggedInUser } from "@/lib/user";
 import React from "react";
 import Image from "next/image";
@@ -42,6 +35,7 @@ export function Header() {
   const handleLogout = () => {
     localStorage.removeItem("auth_token");
     setUser(null);
+    window.location.reload();
   };
 
   return (

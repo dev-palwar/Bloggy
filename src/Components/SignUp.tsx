@@ -1,16 +1,20 @@
 import React from "react";
 import { signUpQuery } from "@/API/GraphQl/user";
 import { useMutation } from "@apollo/client";
-import { Avatar, TextField, Typography, Box, Button } from "@mui/material";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { uploadImg } from "@/lib/uploadImg";
+import { Input } from "@/component/ui/input";
+import { Button } from "@/component/ui/button";
+import { Textarea } from "@/component/ui/textarea";
+import { Label } from "@/component/ui/label";
+import { Avatar, AvatarImage, AvatarFallback } from "@/component/ui/avatar";
 
 export default function SignUp() {
   const formRef = React.useRef<HTMLFormElement | null>(null);
-  const [loading, setLoading] = React.useState<Boolean>();
-  const [userImage, setUserImage] = React.useState<File | null>();
-  const [dp, setDp] = React.useState<string | undefined>();
+  const [loading, setLoading] = React.useState<boolean>(false);
+  const [userImage, setUserImage] = React.useState<File | null>(null);
+  const [dp, setDp] = React.useState<string | undefined>(undefined);
   const [signUpPayload, { error, data }] = useMutation(signUpQuery);
   const [toastDisplayed, setToastDisplayed] = React.useState(false);
 
@@ -26,7 +30,6 @@ export default function SignUp() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    // Access form data
     const formData = new FormData(event.currentTarget);
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
@@ -34,7 +37,6 @@ export default function SignUp() {
     const bio = formData.get("bio") as string;
     const nationality = formData.get("nationality") as string;
 
-    // Check if userImage is available
     let userImageUrl: string | undefined;
     if (userImage) {
       try {
@@ -44,21 +46,18 @@ export default function SignUp() {
         return;
       }
     } else {
-      // Sets a random avatar if userImage is not available
       userImageUrl = `https://api.multiavatar.com/${name}.svg`;
     }
 
-    // Checks if required fields are filled
     if (!email || !password || !name || !bio || !nationality) {
       toast.error("Please fill in all required fields.");
       return;
     }
 
-    // Proceeds with API call
     setLoading(true);
 
     try {
-      signUpPayload({
+      await signUpPayload({
         variables: {
           input: {
             name,
@@ -72,122 +71,99 @@ export default function SignUp() {
       });
     } catch (error) {
       toast.error("Error while creating account");
+    } finally {
+      setLoading(false);
     }
   };
 
   React.useEffect(() => {
     if (data && !toastDisplayed) {
-      setLoading(false);
-      toast.success("You can log in now");
       setToastDisplayed(true);
+      toast.success("Account created successfully! You can log in now.");
       if (formRef.current) {
         formRef.current.reset();
       }
-
-      setUserImage(null); // Resets the userImage state
-      setDp(undefined); // Resets the dp state
+      setUserImage(null);
+      setDp(undefined);
     }
     if (error) {
-      setLoading(false);
       toast.error(error.message);
     }
   }, [data, error, toastDisplayed]);
 
   return (
-    <>
+    <div className="flex flex-col items-center justify-center ">
       <ToastContainer />
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
+      <form
+        ref={formRef}
+        className=" p-8 rounded-lg w-full max-w-md"
+        onSubmit={handleSubmit}
       >
-        <label htmlFor="avatar-input">
-          <Avatar
-            id="avatar"
-            sx={{ m: 1, bgcolor: "secondary.main" }}
-            src={dp}
-          ></Avatar>
+        <div className="flex flex-col items-center mb-6">
+          <label htmlFor="avatar-input" className="cursor-pointer">
+            <Avatar className="w-24 h-24">
+              {dp ? (
+                <AvatarImage src={dp} />
+              ) : (
+                <AvatarFallback>?</AvatarFallback>
+              )}
+            </Avatar>
+          </label>
           <input
-            required
             type="file"
             id="avatar-input"
             accept="image/*"
             style={{ display: "none" }}
             onChange={handleImageChange}
           />
-        </label>
-        <Typography component="h1" variant="body1">
-          Sign up
-        </Typography>
-        <Box
-          component="form"
-          noValidate
-          sx={{ mt: 1 }}
-          onSubmit={handleSubmit}
-          ref={formRef}
-        >
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            autoFocus
-          />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-          />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="name"
-            label="name"
-            type="name"
-            id="name"
-            autoComplete="current-name"
-          />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="bio"
-            label="bio"
-            type="bio"
-            id="bio"
-            autoComplete="current-bio"
-          />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="nationality"
-            label="nationality"
-            type="nationality"
-            id="nationality"
-            autoComplete="current-nationality"
-          />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-          >
-            {loading ? "Signing up..." : "Sign up"}
-          </Button>
-        </Box>
-      </Box>
-    </>
+        </div>
+        <div className="space-y-4">
+          <div>
+            <Label htmlFor="email">Email Address</Label>
+            <Input
+              id="email"
+              name="email"
+              placeholder="Email Address"
+              required
+            />
+          </div>
+          <div>
+            <Label htmlFor="password">Password</Label>
+            <Input
+              id="password"
+              name="password"
+              placeholder="Password"
+              type="password"
+              required
+            />
+          </div>
+          <div>
+            <Label htmlFor="name">Name</Label>
+            <Input id="name" name="name" placeholder="Name" required />
+          </div>
+          <div>
+            <Label htmlFor="bio">Bio</Label>
+            <Textarea
+              id="bio"
+              name="bio"
+              placeholder="Write a short bio..."
+              required
+            />
+          </div>
+          <div>
+            <Label htmlFor="nationality">Nationality</Label>
+            <Input
+              id="nationality"
+              name="nationality"
+              placeholder="Nationality"
+              required
+            />
+          </div>
+        </div>
+        <Button type="submit" className="w-full mt-4" disabled={loading}>
+          {loading ? "Signing up..." : "Sign up"}
+        </Button>
+      </form>
+    </div>
   );
 }

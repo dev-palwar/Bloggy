@@ -1,17 +1,16 @@
 import { addComment, deleteCommentQuery } from "@/API/GraphQl/blog";
 import { context, variables } from "@/API/GraphQl/context";
 import { useMutation } from "@apollo/client";
-import SendIcon from "@mui/icons-material/Send";
 import Link from "next/link";
 import React from "react";
 import { usePathname } from "next/navigation";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import DeleteIcon from "@mui/icons-material/Delete";
 import { getLoggedInUser } from "@/lib/user";
 import { formateDate } from "@/lib/App";
 import Image from "next/image";
 import BasicModal from "./Modale";
+import { EraserIcon, SendIcon } from "lucide-react";
 
 interface CommentComponentParams {
   commentsArr: Comments[] | undefined;
@@ -43,8 +42,6 @@ export const CommentComponent = (params: CommentComponentParams) => {
       console.log("Comment cannot be empty");
     }
   };
-
-  if (data) console.log(data);
 
   return (
     <>
@@ -120,7 +117,7 @@ const Comments = ({ commentObj }: { commentObj: Comments }) => {
             "
           >
             {getLoggedInUser()?.userId == commentObj.author.id && (
-              <DeleteIcon />
+              <EraserIcon />
             )}
           </div>
         </div>
